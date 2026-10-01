@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小恐龙用户手册</title>
+<style>
+  :root {
+    --ink:#2B2B2B; --acc:#C0501E; --navy:#1F4E79; --line:#E5DED2;
+    --paper:#FAF7F2; --mute:#8A8378; --soft:#F3EFE7;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+         background:var(--paper); color:var(--ink); line-height:1.75; }
+  .wrap { max-width:720px; margin:0 auto; padding:0 0 48px; }
+
+  /* 封面 */
+  .cover { background:var(--navy); color:#fff; text-align:center;
+           padding:72px 24px 48px; border-radius:0 0 24px 24px; }
+  .cover .tag { font-size:13px; letter-spacing:2px; color:#BDD7EE; margin-bottom:10px; }
+  .cover h1 { font-size:34px; font-weight:700; letter-spacing:3px; margin-bottom:6px; }
+  .cover .sub { font-size:17px; color:#FFD966; margin-bottom:20px; }
+  .cover .meta { font-size:12.5px; color:#BDD7EE; margin-top:8px; }
+  .cover .bar { width:56px; height:4px; background:var(--acc); margin:18px auto 22px; border-radius:2px; }
+
+  /* 章节 */
+  section { margin:26px 14px 0; background:#fff; border-radius:14px;
+            padding:22px 20px; box-shadow:0 1px 3px rgba(43,43,43,.06); }
+  h2 { font-size:19px; color:var(--acc); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  h2::before { content:""; width:5px; height:18px; background:var(--acc); border-radius:3px; display:inline-block; }
+  h3 { font-size:15.5px; color:var(--navy); margin:16px 0 6px; }
+  p { font-size:14.5px; margin:6px 0; }
+  .note { font-size:13px; color:var(--mute); margin-top:10px; }
+
+  /* 表格 */
+  table { width:100%; border-collapse:collapse; margin:10px 0 6px; font-size:14px; }
+  th { color:var(--acc); text-align:left; font-weight:600; padding:8px 6px;
+       border-bottom:2px solid var(--acc); }
+  td { padding:8px 6px; border-bottom:1px solid var(--line); }
+  tr:last-child td { border-bottom:none; }
+  tr:nth-child(even) td { background:var(--soft); }
+
+  /* 标签 */
+  .pill { display:inline-block; background:var(--soft); color:var(--navy);
+          border-radius:20px; padding:2px 12px; font-size:12.5px; margin:2px 4px 2px 0; }
+  .kbd { display:inline-block; background:#2B2B2B; color:#fff; border-radius:6px;
+         padding:1px 8px; font-size:12.5px; margin:0 2px; }
+
+  /* 下载按钮 */
+  .dl { display:block; text-align:center; background:var(--acc); color:#fff;
+        text-decoration:none; border-radius:10px; padding:12px 0; font-size:15.5px;
+        font-weight:600; margin:8px 0 4px; }
+  .dl:active { opacity:.85; }
+
+  footer { text-align:center; color:var(--mute); font-size:12.5px; margin-top:34px; padding:0 20px; }
+  footer .ver { color:var(--acc); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="tag">TINY DINO · 仿谷歌断网小恐龙</div>
+    <h1>小恐龙用户手册</h1>
+    <div class="sub">小恐龙跑酷</div>
+    <div class="bar"></div>
+    <div class="meta">版本 Q-3 · 2026</div>
+    <div class="meta">开源迷你游戏机 · CH32V003 · SSD1306 OLED</div>
+  </div>
+
+  <section>
+    <h2>快速上手</h2>
+    <p>开机即进入开始界面，按 <span class="kbd">OK</span> 或 <span class="kbd">上</span> 起跑。游戏里只有两件事：<b>跳过去</b>，或者<b>蹲下来</b>。碰到障碍结束，按 OK 再来一局。</p>
+    <table>
+      <tr><th>项目</th><th>说明</th></tr>
+      <tr><td>屏幕</td><td>0.96 英寸 OLED，128×64</td></tr>
+      <tr><td>按键</td><td>OK 键 + 上下左右方向键</td></tr>
+      <tr><td>声音</td><td>蜂鸣器，5 档音量（1 档静音）</td></tr>
+      <tr><td>记忆</td><td>最高分 / 亮度 / 音量断电保存</td></tr>
+      <tr><td>固件</td><td>tiny_dino.bin · Q-3</td></tr>
+    </table>
+    <p class="note">玩法精髓：前期单棵仙人掌为主，后期多连与飞鸟登场；700 分后进入特殊模式。</p>
+  </section>
+
+  <section>
+    <h2>按键操作</h2>
+    <table>
+      <tr><th>操作</th><th>效果</th><th>说明</th></tr>
+      <tr><td><span class="kbd">上</span> / <span class="kbd">OK</span></td><td>跳跃</td><td>越过仙人掌</td></tr>
+      <tr><td><span class="kbd">下</span></td><td>下蹲</td><td>躲高空飞鸟；松开恢复</td></tr>
+      <tr><td><span class="kbd">OK</span></td><td>开始 / 重开</td><td>开始出发，结束后再来一局</td></tr>
+      <tr><td>长按 OK 5 秒</td><td>重新开始</td><td>游戏中回到开始界面</td></tr>
+      <tr><td>左→右→左→右</td><td>隐藏设置</td><td>开始 / 结束界面输入</td></tr>
+    </table>
+    <p class="note">跳跃高度与落地节奏固定，多玩几次就能预判。下蹲时碰撞范围变小。</p>
+  </section>
+
+  <section>
+    <h2>游戏玩法</h2>
+    <h3>计分</h3>
+    <p>分数实时累计，速度约为原版两倍。每 100 分速度提升一档并响提示音；<b>打破历史最高分</b>时立即响起上扬音阶庆祝，最高分断电保存。</p>
+    <h3>仙人掌</h3>
+    <p>三种：<span class="pill">单棵</span><span class="pill">二连</span><span class="pill">三连</span>。前期八成是单棵，得分越高多连越多；三连出现在后期，需要提前起跳。</p>
+    <h3>速度</h3>
+    <table>
+      <tr><th>初始</th><th>每 100 分</th><th>上限</th></tr>
+      <tr><td>4.5 px/帧</td><td>+0.125 px/帧</td><td>8.0 px/帧</td></tr>
+    </table>
+    <p class="note">节奏口诀：单棵轻松跳，二连稳节奏，三连早预判。</p>
+  </section>
+
+  <section>
+    <h2>特殊模式</h2>
+    <p>得分达 <b>700</b> 后进入三阶段循环，状态栏字母 <b>T</b>（特殊）给出提示：</p>
+    <table>
+      <tr><th>阶段</th><th>时长</th><th>状态栏</th></tr>
+      <tr><td>正常期</td><td>约 180 ~ 200 分</td><td>无标志</td></tr>
+      <tr><td>过渡期</td><td>约 20 分</td><td>T 闪烁</td></tr>
+      <tr><td>特殊期</td><td>约 100 ~ 120 分</td><td>T 常亮</td></tr>
+    </table>
+    <p>特殊期变化：三连仙人掌刷新率降低（30%→20%）、速度略微放慢、仙人掌间距拉开（不会两个同框）。</p>
+    <h3>飞鸟</h3>
+    <p>特殊期内约 35% 概率出现飞鸟，高低各半：</p>
+    <table>
+      <tr><th>类型</th><th>高度</th><th>应对</th></tr>
+      <tr><td>低飞鸟</td><td>贴地飞行</td><td>像仙人掌一样，跳过即可</td></tr>
+      <tr><td>高飞鸟</td><td>高空飞行</td><td>按下键下蹲躲避</td></tr>
+    </table>
+    <p class="note">记住：高鸟蹲，低鸟跳。</p>
+  </section>
+
+  <section>
+    <h2>设置界面</h2>
+    <p>在开始或结束界面依次按 <span class="kbd">左</span><span class="kbd">右</span><span class="kbd">左</span><span class="kbd">右</span> 进入隐藏设置。三列：亮度、音量、保存与退出。左右选列（选中项下方有选中线），上下调档。</p>
+    <table>
+      <tr><th>设置项</th><th>档位</th><th>说明</th></tr>
+      <tr><td>亮度</td><td>1 ~ 5，默认 3</td><td>数字越大屏幕越亮</td></tr>
+      <tr><td>音量</td><td>1 ~ 5，默认 3</td><td>数字越大声音越大；1 档静音</td></tr>
+    </table>
+    <h3>保存与退出</h3>
+    <p>选中第三列按 OK，弹出三个选项（左右选择、OK 确认）：<b>保存并退出</b> / <b>直接退出</b>（不保存）/ <b>返回设置</b>。</p>
+    <h3>还原系统</h3>
+    <p>设置界面长按 OK 5 秒进入还原界面，选择“确认”后清除所有记录与设置并重启；“返回”则退回设置界面。</p>
+    <p class="note">版本号：设置界面底部显示（当前 Q-3）。</p>
+  </section>
+
+  <section>
+    <h2>常见问题</h2>
+    <table>
+      <tr><th>问题</th><th>解决</th></tr>
+      <tr><td>没有声音？</td><td>音量被设为 1 档（静音），进设置调大。</td></tr>
+      <tr><td>屏幕太暗 / 太亮？</td><td>设置界面选“亮度”，上下键调节。</td></tr>
+      <tr><td>最高分会丢吗？</td><td>不会，写入 Flash，断电保留。</td></tr>
+      <tr><td>三连仙人掌太难？</td><td>特殊模式下概率降低、间距拉大，稳住节奏。</td></tr>
+      <tr><td>想恢复出厂？</td><td>设置长按 OK 5 秒 → 还原系统 → 确认。</td></tr>
+    </table>
+    <p class="note">小贴士：破纪录音效只在当场响起；想再听一遍，就再破一次纪录。</p>
+  </section>
+
+  <section>
+    <p style="margin-top:2px">需要完整 PDF 版本（可打印 / 存档）？</p>
+    <a class="dl" href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@f5d2eecdb301cf6750b46b6cd4f1d20cb8dd3ff0/dino-manual.pdf">下载 PDF 说明书</a>
+    <p class="note" style="text-align:center">点击后浏览器将下载 dino-manual.pdf（8 页书册版）</p>
+  </section>
+
+  <footer>
+    <div>小恐龙用户手册 · <span class="ver">版本 Q-3</span> · 2026</div>
+    <div style="margin-top:4px">开源迷你游戏机 · CH32V003 · SSD1306 OLED · 128×64</div>
+  </footer>
+
+</div>
+</body>
+</html>
