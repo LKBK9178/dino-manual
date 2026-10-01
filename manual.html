@@ -3,102 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小恐龙用户手册</title>
+<title>小恐龙用户手册 · 在线模拟器</title>
 <style>
-  :root {
-    --ink:#2B2B2B; --acc:#C0501E; --navy:#1F4E79; --line:#E5DED2;
-    --paper:#FAF7F2; --mute:#8A8378; --soft:#F3EFE7;
+  :root{
+    --blue:#1A73E8; --blue-dark:#0B57D0; --blue-deep:#0A3E8C;
+    --blue-soft:#E8F0FE; --blue-bg:#F5F8FE; --ink:#202124; --mute:#5F6368;
+    --line:#DCE3F0; --white:#FFFFFF; --accent:#F9AB00; --console:#F7B500;
+    --console-dark:#E0A300;
   }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  body { font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
-         background:var(--paper); color:var(--ink); line-height:1.75; }
-  .wrap { max-width:720px; margin:0 auto; padding:0 0 48px; }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+       background:var(--blue-bg); color:var(--ink); line-height:1.75;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px;}
 
-  /* 封面 */
-  .cover { background:var(--navy); color:#fff; text-align:center;
-           padding:72px 24px 48px; border-radius:0 0 24px 24px; }
-  .cover .tag { font-size:13px; letter-spacing:2px; color:#BDD7EE; margin-bottom:10px; }
-  .cover h1 { font-size:34px; font-weight:700; letter-spacing:3px; margin-bottom:6px; }
-  .cover .sub { font-size:17px; color:#FFD966; margin-bottom:20px; }
-  .cover .meta { font-size:12.5px; color:#BDD7EE; margin-top:8px; }
-  .cover .bar { width:56px; height:4px; background:var(--acc); margin:18px auto 22px; border-radius:2px; }
+  /* 导航 */
+  nav{position:sticky;top:0;z-index:50;background:var(--blue-dark);color:#fff;
+      box-shadow:0 2px 10px rgba(11,87,208,.25);}
+  .nav-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;
+          align-items:center;gap:14px;flex-wrap:wrap;}
+  .nav-brand{font-weight:700;font-size:16px;letter-spacing:.5px;white-space:nowrap;}
+  .nav-brand .dot{color:#FFD166;}
+  .nav-links{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;}
+  .nav-links a{color:#DCE8FF;text-decoration:none;font-size:13px;padding:6px 10px;
+               border-radius:8px;transition:background .15s;}
+  .nav-links a:hover{background:rgba(255,255,255,.14);color:#fff;}
 
-  /* 章节 */
-  section { margin:26px 14px 0; background:#fff; border-radius:14px;
-            padding:22px 20px; box-shadow:0 1px 3px rgba(43,43,43,.06); }
-  h2 { font-size:19px; color:var(--acc); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
-  h2::before { content:""; width:5px; height:18px; background:var(--acc); border-radius:3px; display:inline-block; }
-  h3 { font-size:15.5px; color:var(--navy); margin:16px 0 6px; }
-  p { font-size:14.5px; margin:6px 0; }
-  .note { font-size:13px; color:var(--mute); margin-top:10px; }
+  /* Hero */
+  .hero{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-deep) 100%);
+        color:#fff;border-radius:0 0 26px 26px;padding:52px 24px 44px;text-align:center;
+        position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;left:-60px;top:-60px;width:240px;height:240px;
+                border-radius:50%;background:rgba(255,255,255,.06);}
+  .hero::after{content:"";position:absolute;right:-40px;bottom:-80px;width:220px;height:220px;
+               border-radius:50%;background:rgba(255,255,255,.05);}
+  .hero .tag{font-size:13px;letter-spacing:3px;color:#AECBFF;margin-bottom:10px;}
+  .hero h1{font-size:34px;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+  .hero .sub{font-size:16px;color:#DCE8FF;margin-bottom:8px;}
+  .hero .meta{font-size:12.5px;color:#AECBFF;}
+  .hero-btns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;
+       font-size:14.5px;padding:11px 22px;border-radius:12px;transition:transform .12s,box-shadow .12s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-play{background:var(--accent);color:#3D2A00;box-shadow:0 4px 14px rgba(249,171,0,.35);}
+  .btn-dl{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);}
+  .btn-dl:hover{background:rgba(255,255,255,.24);}
 
-  /* 表格 */
-  table { width:100%; border-collapse:collapse; margin:10px 0 6px; font-size:14px; }
-  th { color:var(--acc); text-align:left; font-weight:600; padding:8px 6px;
-       border-bottom:2px solid var(--acc); }
-  td { padding:8px 6px; border-bottom:1px solid var(--line); }
-  tr:last-child td { border-bottom:none; }
-  tr:nth-child(even) td { background:var(--soft); }
+  /* 区块卡片 */
+  section{margin:26px 0 0;background:var(--white);border:1px solid var(--line);
+          border-radius:18px;padding:24px 22px;box-shadow:0 2px 8px rgba(26,115,232,.05);}
+  h2{font-size:20px;color:var(--blue-dark);margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+  h2 .ico{width:26px;height:26px;border-radius:8px;background:var(--blue-soft);display:inline-flex;
+          align-items:center;justify-content:center;font-size:14px;}
+  h3{font-size:15.5px;color:var(--blue-deep);margin:16px 0 6px;}
+  p{font-size:14.5px;margin:6px 0;color:var(--ink);}
+  .mute{color:var(--mute);font-size:13px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14px;}
+  th{color:var(--blue-dark);text-align:left;font-weight:600;padding:9px 8px;
+     border-bottom:2px solid var(--blue);background:var(--blue-soft);}
+  td{padding:9px 8px;border-bottom:1px solid var(--line);}
+  tr:last-child td{border-bottom:none;}
+  tr:nth-child(even) td{background:#F8FAFF;}
+  .kbd{display:inline-block;background:var(--blue-dark);color:#fff;border-radius:6px;
+       padding:1px 9px;font-size:12.5px;margin:0 2px;font-weight:600;}
+  .pill{display:inline-block;background:var(--blue-soft);color:var(--blue-dark);
+        border-radius:20px;padding:2px 12px;font-size:12.5px;margin:2px 4px 2px 0;font-weight:600;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:14px;}
+  .card{background:#F8FAFF;border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
+  .card b{color:var(--blue-dark);font-size:15px;display:block;margin-bottom:4px;}
+  .card span{font-size:13px;color:var(--mute);}
 
-  /* 标签 */
-  .pill { display:inline-block; background:var(--soft); color:var(--navy);
-          border-radius:20px; padding:2px 12px; font-size:12.5px; margin:2px 4px 2px 0; }
-  .kbd { display:inline-block; background:#2B2B2B; color:#fff; border-radius:6px;
-         padding:1px 8px; font-size:12.5px; margin:0 2px; }
+  /* 原理图 */
+  .schematic{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:14px;}
+  .schematic .frame{width:100%;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+                    background:#F0F4FB;padding:10px;text-align:center;}
+  .schematic img{max-width:100%;height:auto;border-radius:8px;cursor:zoom-in;}
+  .zoom{display:inline-flex;align-items:center;gap:6px;background:var(--blue-soft);color:var(--blue-dark);
+        text-decoration:none;font-size:13.5px;font-weight:600;padding:8px 18px;border-radius:10px;}
+  .zoom:hover{background:#D8E6FC;}
 
-  /* 下载按钮 */
-  .dl { display:block; text-align:center; background:var(--acc); color:#fff;
-        text-decoration:none; border-radius:10px; padding:12px 0; font-size:15.5px;
-        font-weight:600; margin:8px 0 4px; }
-  .dl:active { opacity:.85; }
+  /* FAQ */
+  details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:#F8FAFF;}
+  details summary{cursor:pointer;font-weight:600;color:var(--blue-deep);font-size:14.5px;list-style:none;}
+  details summary::before{content:"▸ ";color:var(--blue);}
+  details[open] summary::before{content:"▾ ";}
+  details p{font-size:13.5px;color:var(--mute);margin-top:8px;}
 
-  footer { text-align:center; color:var(--mute); font-size:12.5px; margin-top:34px; padding:0 20px; }
-  footer .ver { color:var(--acc); font-weight:600; }
+  footer{text-align:center;color:var(--mute);font-size:12.5px;margin-top:36px;padding:0 16px;}
+  footer .ver{color:var(--blue-dark);font-weight:700;}
+  footer .line{width:48px;height:3px;background:var(--blue);margin:14px auto;border-radius:2px;}
+
+  /* ============ 模拟器 ============ */
+  #sim{scroll-margin-top:70px;}
+  .sim-intro{display:flex;gap:10px;align-items:flex-start;background:var(--blue-soft);
+             border-radius:12px;padding:12px 16px;margin:12px 0 18px;font-size:13.5px;color:var(--blue-deep);}
+  .sim-intro b{color:var(--blue-dark);}
+  .stage{display:flex;justify-content:center;padding:18px 0 6px;}
+  .console{position:relative;width:352px;background:linear-gradient(180deg,var(--console) 0%,var(--console-dark) 100%);
+           border-radius:26px;padding:14px 16px 18px;box-shadow:0 14px 34px rgba(122,93,0,.28),
+           inset 0 2px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(160,116,0,.5);
+           user-select:none;-webkit-user-select:none;}
+  /* 挂环 */
+  .strap{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:34px;height:22px;
+         border:5px solid var(--console-dark);border-bottom:none;border-radius:16px 16px 0 0;}
+  .console .brand{text-align:center;font-size:9px;letter-spacing:3px;color:#7A5C00;margin-bottom:8px;font-weight:700;}
+  /* 屏幕 */
+  .screen-frame{background:#1C1C1E;border-radius:14px;padding:10px;box-shadow:inset 0 2px 6px rgba(0,0,0,.6);}
+  .screen-inner{background:#000;border-radius:8px;overflow:hidden;position:relative;}
+  canvas#oled{display:block;width:320px;height:160px;image-rendering:pixelated;image-rendering:crisp-edges;}
+  .scr-led{position:absolute;top:8px;right:10px;width:7px;height:7px;border-radius:50%;
+           background:#3A3A3A;transition:background .3s;}
+  .console.on .scr-led{background:#39D353;box-shadow:0 0 6px #39D353;}
+  /* 控制区 */
+  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:0 8px;}
+  /* 摇杆 */
+  .dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:4px;}
+  .dpad button{width:44px;height:44px;border:none;border-radius:12px;background:linear-gradient(180deg,#3A3A3C,#26262A);
+               color:#C9C9CF;font-size:15px;font-weight:700;box-shadow:0 3px 0 #141417,0 4px 8px rgba(0,0,0,.35);
+               cursor:pointer;transition:transform .06s,box-shadow .06s,background .06s;display:flex;
+               align-items:center;justify-content:center;}
+  .dpad button:active,.dpad button.pressed{transform:translateY(3px);box-shadow:0 1px 0 #141417;
+               background:linear-gradient(180deg,#4A4A4E,#333338);color:#fff;}
+  .d-up{grid-column:2;grid-row:1;}
+  .d-left{grid-column:1;grid-row:2;}
+  .d-right{grid-column:3;grid-row:2;}
+  .d-down{grid-column:2;grid-row:3;}
+  .dpad .mid{grid-column:2;grid-row:2;width:44px;height:44px;}
+  /* 右侧：OK + 开关 */
+  .rside{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .btn-ok{width:74px;height:74px;border-radius:50%;border:none;cursor:pointer;
+          background:radial-gradient(circle at 35% 30%,#E4572E,#B03A17);
+          box-shadow:0 5px 0 #8A2C10,0 6px 12px rgba(0,0,0,.3),inset 0 2px 2px rgba(255,255,255,.35);
+          color:#fff;font-weight:800;font-size:16px;letter-spacing:1px;transition:transform .06s,box-shadow .06s;}
+  .btn-ok:active,.btn-ok.pressed{transform:translateY(5px);box-shadow:0 1px 0 #8A2C10;}
+  /* 开关 */
+  .switch-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .switch-wrap .lbl{font-size:9px;color:#7A5C00;font-weight:700;letter-spacing:1px;}
+  .switch{position:relative;width:52px;height:26px;background:#B8A24C;border-radius:13px;
+          box-shadow:inset 0 2px 4px rgba(0,0,0,.35);cursor:pointer;transition:background .2s;}
+  .switch.on{background:#4C8F3C;}
+  .knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;
+        background:linear-gradient(180deg,#fff,#D8D8D8);box-shadow:0 1px 3px rgba(0,0,0,.4);
+        transition:left .18s;}
+  .switch.on .knob{left:28px;}
+  .switch-lbls{display:flex;justify-content:space-between;width:52px;font-size:8px;color:#7A5C00;font-weight:700;}
+  /* 控制说明 */
+  .sim-help{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;}
+  .sim-help .h{background:#F8FAFF;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--mute);}
+  .sim-help .h b{color:var(--blue-dark);}
+  @media (max-width:520px){
+    .hero h1{font-size:27px;}
+    section{padding:20px 16px;}
+    .console{width:320px;}
+    canvas#oled{width:292px;height:146px;}
+  }
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-in">
+    <div class="nav-brand">🦖 小恐龙<span class="dot">·</span>用户手册</div>
+    <div class="nav-links">
+      <a href="#sim">模拟器</a>
+      <a href="#quick">快速上手</a>
+      <a href="#keys">按键操作</a>
+      <a href="#play">游戏玩法</a>
+      <a href="#special">特殊模式</a>
+      <a href="#settings">设置界面</a>
+      <a href="#schematic">原理图</a>
+      <a href="#faq">常见问题</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
 
-  <div class="cover">
-    <div class="tag">TINY DINO · 仿谷歌断网小恐龙</div>
+  <div class="hero">
+    <div class="tag">TINY DINO · 开源迷你游戏机</div>
     <h1>小恐龙用户手册</h1>
-    <div class="sub">小恐龙跑酷</div>
-    <div class="bar"></div>
-    <div class="meta">版本 Q-3 · 2026</div>
-    <div class="meta">开源迷你游戏机 · CH32V003 · SSD1306 OLED</div>
+    <div class="sub">仿谷歌断网小恐龙 · 极简像素跑酷</div>
+    <div class="meta">版本 Q-3 · CH32V003 · SSD1306 OLED 128×64 · 2026</div>
+    <div class="hero-btns">
+      <a class="btn btn-play" href="#sim">▶ 在线试玩模拟器</a>
+      <a class="btn btn-dl" href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@f5d2eecdb301cf6750b46b6cd4f1d20cb8dd3ff0/dino-manual.pdf">⬇ 下载说明书 PDF</a>
+    </div>
   </div>
 
-  <section>
-    <h2>快速上手</h2>
-    <p>开机即进入开始界面，按 <span class="kbd">OK</span> 或 <span class="kbd">上</span> 起跑。游戏里只有两件事：<b>跳过去</b>，或者<b>蹲下来</b>。碰到障碍结束，按 OK 再来一局。</p>
-    <table>
-      <tr><th>项目</th><th>说明</th></tr>
-      <tr><td>屏幕</td><td>0.96 英寸 OLED，128×64</td></tr>
-      <tr><td>按键</td><td>OK 键 + 上下左右方向键</td></tr>
-      <tr><td>声音</td><td>蜂鸣器，5 档音量（1 档静音）</td></tr>
-      <tr><td>记忆</td><td>最高分 / 亮度 / 音量断电保存</td></tr>
-      <tr><td>固件</td><td>tiny_dino.bin · Q-3</td></tr>
-    </table>
-    <p class="note">玩法精髓：前期单棵仙人掌为主，后期多连与飞鸟登场；700 分后进入特殊模式。</p>
+  <!-- ============ 模拟器 ============ -->
+  <section id="sim">
+    <h2><span class="ico">🎮</span>在线模拟器</h2>
+    <div class="sim-intro">
+      <span>💡 <b>先拨右侧的电源开关开机</b>，屏幕点亮后才能玩。摇杆 <b>上推</b> 跳跃、<b>下推</b> 下蹲，右侧 <b>OK</b> 键开始 / 跳跃。电脑上也可用键盘：<b>↑/空格</b> 跳，<b>↓</b> 蹲，<b>回车</b> OK。</span>
+    </div>
+
+    <div class="stage">
+      <div class="console" id="console">
+        <div class="strap"></div>
+        <div class="brand">TINY·DINO</div>
+        <div class="screen-frame">
+          <div class="screen-inner">
+            <canvas id="oled" width="128" height="64"></canvas>
+            <div class="scr-led"></div>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="dpad">
+            <button class="d-up" data-k="up" aria-label="上">▲</button>
+            <button class="d-left" data-k="left" aria-label="左">◀</button>
+            <div class="mid"></div>
+            <button class="d-right" data-k="right" aria-label="右">▶</button>
+            <button class="d-down" data-k="down" aria-label="下">▼</button>
+          </div>
+          <div class="rside">
+            <button class="btn-ok" data-k="ok" aria-label="OK">OK</button>
+            <div class="switch-wrap">
+              <div class="switch" id="power" title="电源开关">
+                <div class="knob"></div>
+              </div>
+              <div class="switch-lbls"><span>OFF</span><span>ON</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sim-help">
+      <div class="h"><b>🔌 电源</b>：右侧拨动开关 ON / OFF，OFF 时屏幕熄灭。</div>
+      <div class="h"><b>🕹 摇杆</b>：上＝跳跃，下＝下蹲（按住持续蹲）。</div>
+      <div class="h"><b>🔴 OK 键</b>：开始游戏 / 跳跃 / 结束后重开。</div>
+      <div class="h"><b>⌨ 键盘</b>：↑/空格 跳 · ↓ 蹲 · 回车 OK · P 电源。</div>
+    </div>
   </section>
 
-  <section>
-    <h2>按键操作</h2>
+  <!-- ============ 快速上手 ============ -->
+  <section id="quick">
+    <h2><span class="ico">🚀</span>快速上手</h2>
+    <p>开机即进入开始界面，按 <span class="kbd">OK</span> 或 <span class="kbd">上</span> 起跑。游戏里只有两件事：<b>跳过去</b>，或者 <b>蹲下来</b>。碰到障碍结束，再按 OK 就能重来。</p>
+    <div class="cards">
+      <div class="card"><b>屏幕</b><span>0.96 英寸 OLED · 128×64</span></div>
+      <div class="card"><b>按键</b><span>OK 键 + 四向摇杆</span></div>
+      <div class="card"><b>声音</b><span>蜂鸣器 · 5 档音量（1 档静音）</span></div>
+      <div class="card"><b>记忆</b><span>最高分 / 亮度 / 音量断电保存</span></div>
+      <div class="card"><b>固件</b><span>tiny_dino.bin · Q-3</span></div>
+    </div>
+    <p class="mute" style="margin-top:12px">玩法精髓：前期单棵仙人掌为主，后期多连与飞鸟登场；700 分后进入特殊模式。</p>
+  </section>
+
+  <!-- ============ 按键操作 ============ -->
+  <section id="keys">
+    <h2><span class="ico">🕹</span>按键操作</h2>
     <table>
       <tr><th>操作</th><th>效果</th><th>说明</th></tr>
       <tr><td><span class="kbd">上</span> / <span class="kbd">OK</span></td><td>跳跃</td><td>越过仙人掌</td></tr>
       <tr><td><span class="kbd">下</span></td><td>下蹲</td><td>躲高空飞鸟；松开恢复</td></tr>
       <tr><td><span class="kbd">OK</span></td><td>开始 / 重开</td><td>开始出发，结束后再来一局</td></tr>
       <tr><td>长按 OK 5 秒</td><td>重新开始</td><td>游戏中回到开始界面</td></tr>
-      <tr><td>左→右→左→右</td><td>隐藏设置</td><td>开始 / 结束界面输入</td></tr>
+      <tr><td><span class="kbd">左</span>→<span class="kbd">右</span>→<span class="kbd">左</span>→<span class="kbd">右</span></td><td>隐藏设置</td><td>开始 / 结束界面输入</td></tr>
     </table>
-    <p class="note">跳跃高度与落地节奏固定，多玩几次就能预判。下蹲时碰撞范围变小。</p>
+    <p class="mute">跳跃高度与落地节奏固定，多玩几次就能预判。下蹲时碰撞范围变小。</p>
   </section>
 
-  <section>
-    <h2>游戏玩法</h2>
+  <!-- ============ 游戏玩法 ============ -->
+  <section id="play">
+    <h2><span class="ico">🦖</span>游戏玩法</h2>
     <h3>计分</h3>
-    <p>分数实时累计，速度约为原版两倍。每 100 分速度提升一档并响提示音；<b>打破历史最高分</b>时立即响起上扬音阶庆祝，最高分断电保存。</p>
+    <p>分数实时累计，速度约为原版两倍。每 100 分速度提升一档并响提示音；<b>打破历史最高分</b> 时立即响起上扬音阶庆祝，最高分断电保存。</p>
     <h3>仙人掌</h3>
     <p>三种：<span class="pill">单棵</span><span class="pill">二连</span><span class="pill">三连</span>。前期八成是单棵，得分越高多连越多；三连出现在后期，需要提前起跳。</p>
     <h3>速度</h3>
@@ -106,11 +275,12 @@
       <tr><th>初始</th><th>每 100 分</th><th>上限</th></tr>
       <tr><td>4.5 px/帧</td><td>+0.125 px/帧</td><td>8.0 px/帧</td></tr>
     </table>
-    <p class="note">节奏口诀：单棵轻松跳，二连稳节奏，三连早预判。</p>
+    <p class="mute">节奏口诀：单棵轻松跳，二连稳节奏，三连早预判。</p>
   </section>
 
-  <section>
-    <h2>特殊模式</h2>
+  <!-- ============ 特殊模式 ============ -->
+  <section id="special">
+    <h2><span class="ico">⭐</span>特殊模式</h2>
     <p>得分达 <b>700</b> 后进入三阶段循环，状态栏字母 <b>T</b>（特殊）给出提示：</p>
     <table>
       <tr><th>阶段</th><th>时长</th><th>状态栏</th></tr>
@@ -126,11 +296,12 @@
       <tr><td>低飞鸟</td><td>贴地飞行</td><td>像仙人掌一样，跳过即可</td></tr>
       <tr><td>高飞鸟</td><td>高空飞行</td><td>按下键下蹲躲避</td></tr>
     </table>
-    <p class="note">记住：高鸟蹲，低鸟跳。</p>
+    <p class="mute">记住：高鸟蹲，低鸟跳。</p>
   </section>
 
-  <section>
-    <h2>设置界面</h2>
+  <!-- ============ 设置界面 ============ -->
+  <section id="settings">
+    <h2><span class="ico">⚙</span>设置界面</h2>
     <p>在开始或结束界面依次按 <span class="kbd">左</span><span class="kbd">右</span><span class="kbd">左</span><span class="kbd">右</span> 进入隐藏设置。三列：亮度、音量、保存与退出。左右选列（选中项下方有选中线），上下调档。</p>
     <table>
       <tr><th>设置项</th><th>档位</th><th>说明</th></tr>
@@ -141,33 +312,378 @@
     <p>选中第三列按 OK，弹出三个选项（左右选择、OK 确认）：<b>保存并退出</b> / <b>直接退出</b>（不保存）/ <b>返回设置</b>。</p>
     <h3>还原系统</h3>
     <p>设置界面长按 OK 5 秒进入还原界面，选择“确认”后清除所有记录与设置并重启；“返回”则退回设置界面。</p>
-    <p class="note">版本号：设置界面底部显示（当前 Q-3）。</p>
+    <p class="mute">版本号：设置界面底部显示（当前 Q-3）。</p>
   </section>
 
-  <section>
-    <h2>常见问题</h2>
-    <table>
-      <tr><th>问题</th><th>解决</th></tr>
-      <tr><td>没有声音？</td><td>音量被设为 1 档（静音），进设置调大。</td></tr>
-      <tr><td>屏幕太暗 / 太亮？</td><td>设置界面选“亮度”，上下键调节。</td></tr>
-      <tr><td>最高分会丢吗？</td><td>不会，写入 Flash，断电保留。</td></tr>
-      <tr><td>三连仙人掌太难？</td><td>特殊模式下概率降低、间距拉大，稳住节奏。</td></tr>
-      <tr><td>想恢复出厂？</td><td>设置长按 OK 5 秒 → 还原系统 → 确认。</td></tr>
-    </table>
-    <p class="note">小贴士：破纪录音效只在当场响起；想再听一遍，就再破一次纪录。</p>
+  <!-- ============ 原理图 ============ -->
+  <section id="schematic">
+    <h2><span class="ico">🔌</span>硬件原理图</h2>
+    <p>GameConsole v1.1 官方原理图（点击图片可查看大图，仅供查看）。</p>
+    <div class="schematic">
+      <div class="frame">
+        <a href="schematic_v11_p1.png" target="_blank" title="点击查看大图">
+          <img src="schematic_v11_p1.png" alt="GameConsole v1.1 原理图">
+        </a>
+      </div>
+      <a class="zoom" href="schematic_v11_p1.png" target="_blank">🔍 在新窗口查看大图</a>
+    </div>
+    <p class="mute" style="margin-top:12px">主控 CH32V003J4M6 · SSD1306 OLED（I2C）· 摇杆 ADC 输入 · 蜂鸣器输出。</p>
   </section>
 
-  <section>
-    <p style="margin-top:2px">需要完整 PDF 版本（可打印 / 存档）？</p>
-    <a class="dl" href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@f5d2eecdb301cf6750b46b6cd4f1d20cb8dd3ff0/dino-manual.pdf">下载 PDF 说明书</a>
-    <p class="note" style="text-align:center">点击后浏览器将下载 dino-manual.pdf（8 页书册版）</p>
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <h2><span class="ico">❓</span>常见问题</h2>
+    <details><summary>没有声音？</summary><p>音量被设为 1 档（静音），进设置界面把音量调大即可。</p></details>
+    <details><summary>屏幕太暗 / 太亮？</summary><p>设置界面选“亮度”，用上下键调节 1~5 档。</p></details>
+    <details><summary>最高分会丢吗？</summary><p>不会，写入 Flash，断电后依然保留。</p></details>
+    <details><summary>三连仙人掌太难？</summary><p>特殊模式下三连概率降低、间距拉大，稳住节奏提前起跳。</p></details>
+    <details><summary>想恢复出厂？</summary><p>设置界面长按 OK 5 秒 → 还原系统 → 确认，即可清除记录并重启。</p></details>
+    <details><summary>在哪里下载说明书？</summary><p>仅本页顶部的“下载说明书 PDF”按钮提供下载；源码、编译文件、Gerber、原理图均仅作展示，不在线提供下载。</p></details>
   </section>
 
   <footer>
+    <div class="line"></div>
     <div>小恐龙用户手册 · <span class="ver">版本 Q-3</span> · 2026</div>
-    <div style="margin-top:4px">开源迷你游戏机 · CH32V003 · SSD1306 OLED · 128×64</div>
+    <div style="margin-top:4px">开源迷你游戏机 · CH32V003 · SSD1306 OLED 128×64</div>
   </footer>
 
 </div>
+
+<script>
+"use strict";
+/* ================= 精灵数据（取自 spritebank.h Q-3） ================= */
+const SPR = {
+  RUN1:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00],
+  RUN2:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x37,0x29,0x00,0x00,0x00,0x00],
+  JUMP:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x15,0x07,0x00,0x00,0x00,0x00],
+  DUCK1:[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
+  DUCK2:[16,1,0x1E,0x3F,0xAC,0x78,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
+  C1:[6,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00],
+  C2:[13,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00],
+  C3:[20,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00],
+  CLOUD2:[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x24,0x24,0x24,0x24,0x26,0x23,0x23,0x26,0x3C,0x18],
+  CLOUD3:[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x3C,0x3F,0x3F,0x3F,0x3E,0x24,0x23,0x23,0x3E,0x18],
+  GO_STAND:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xF3,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00],
+  GO_DUCK:[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0x78,0xF8,0x3C,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
+  REFRESH:[18,2,0xFC,0x06,0x03,0x01,0x01,0x41,0x61,0x71,0xF9,0xF9,0x71,0x61,0x41,0x01,0x01,0x03,0x06,0xFC,0x03,0x07,0x0B,0x13,0x33,0x33,0x13,0x13,0x3F,0x3F,0x13,0x13,0x33,0x33,0x13,0x0B,0x07,0x03]
+};
+/* 5x7 数字字体（列优先） */
+const FONT = [
+ [0x3E,0x51,0x49,0x45,0x3E],[0x00,0x42,0x7F,0x40,0x00],[0x42,0x61,0x51,0x49,0x46],
+ [0x21,0x41,0x45,0x4B,0x31],[0x18,0x14,0x12,0x7F,0x10],[0x27,0x45,0x45,0x45,0x39],
+ [0x3C,0x4A,0x49,0x49,0x30],[0x01,0x71,0x09,0x05,0x03],[0x36,0x49,0x49,0x49,0x36],
+ [0x06,0x49,0x49,0x29,0x1E]
+];
+const LETTERS = {
+  G:[0x3E,0x41,0x49,0x49,0x7A],A:[0x7E,0x11,0x11,0x11,0x7E],M:[0x7F,0x02,0x0C,0x02,0x7F],
+  E:[0x7F,0x49,0x49,0x49,0x41],O:[0x3E,0x41,0x41,0x41,0x3E],V:[0x1F,0x20,0x40,0x20,0x1F],
+  R:[0x7F,0x09,0x19,0x29,0x46],SP:[0x00,0x00,0x00,0x00,0x00]
+};
+
+/* ================= 基础 ================= */
+const cv = document.getElementById('oled');
+const ctx = cv.getContext('2d');
+const W = 128, H = 64, GROUND = 52;
+const consoleEl = document.getElementById('console');
+const powerEl = document.getElementById('power');
+let power = false;
+let best = 0;
+try { best = parseInt(localStorage.getItem('dino_best')||'0',10)||0; } catch(e){}
+
+function drawSprite(d, x, y){
+  ctx.fillStyle = '#FFF';
+  const w = d[0], pages = d[1];
+  for(let c=0;c<w;c++){
+    for(let p=0;p<pages;p++){
+      const b = d[2 + p*w + c];
+      for(let r=0;r<8;r++){
+        if(b & (1<<r)) ctx.fillRect(x+c, y+r+p*8, 1, 1);
+      }
+    }
+  }
+  return {w:w, h:pages*8};
+}
+function drawText(cols, x, y){
+  ctx.fillStyle = '#FFF';
+  for(let i=0;i<cols.length;i++){
+    const g = cols[i];
+    for(let c=0;c<5;c++){
+      for(let r=0;r<7;r++){
+        if(g[c] & (1<<r)) ctx.fillRect(x+i*6+c, y+r, 1, 1);
+      }
+    }
+  }
+}
+function textGlyphs(s){
+  const out=[];
+  for(const ch of s.toUpperCase()){
+    if(ch>='0'&&ch<='9') out.push(FONT[ch.charCodeAt(0)-48]);
+    else if(LETTERS[ch]) out.push(LETTERS[ch]);
+    else out.push(LETTERS.SP);
+  }
+  return out;
+}
+const glyphW = a => a.length*6;
+
+/* ================= 音效 ================= */
+let AC = null;
+function ensureAudio(){
+  if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(AC && AC.state==='suspended') AC.resume();
+}
+function beep(freq, dur, delay){
+  if(!AC) return;
+  const t = AC.currentTime + (delay||0);
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type='square'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(0.18,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t+dur+0.02);
+}
+const S_JUMP = ()=>beep(380,0.06);
+const S_SCORE= ()=>beep(660,0.07);
+const S_DIE  = ()=>{beep(200,0.18);beep(140,0.25,0.1);};
+const S_RECORD=()=>{beep(150,0.09);beep(170,0.09,0.1);beep(190,0.09,0.2);beep(220,0.09,0.3);beep(130,0.2,0.42);};
+
+/* ================= 游戏状态 ================= */
+const ST = {MENU:0, RUN:1, OVER:2};
+let st = ST.MENU;
+let dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
+let speed=4.5, score=0, tick=0, hiShown=false;
+let cacti=[], clouds=[], nextCactus=70, nextCloud=30;
+let flash=0, overT=0;
+
+const JUMP_TABLE=[0,3,6,9,12,14,16,17,18,18,17,16,14,12,9,6,3,0];
+
+function resetRun(){
+  st=ST.RUN; score=0; speed=4.5; tick=0; hiShown=false;
+  dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
+  cacti=[]; clouds=[]; nextCactus=70; nextCloud=30; flash=0; overT=0;
+  spawnCloud(true);
+}
+function startMenu(){
+  st=ST.MENU; dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
+  cacti=[]; clouds=[]; nextCactus=70; nextCloud=30;
+  spawnCloud(true);
+}
+function doJump(){
+  if(st===ST.MENU){ ensureAudio(); resetRun(); S_JUMP(); return; }
+  if(st===ST.RUN && dino.jumpT<0){ dino.jumpT=0; S_JUMP(); }
+  if(st===ST.OVER){ ensureAudio(); resetRun(); S_JUMP(); }
+}
+function setDuck(d){
+  if(st!==ST.RUN) return;
+  dino.duck=d;
+}
+function spawnCloud(first){
+  clouds.push({x: W + (first?20:Math.random()*40), y: 2+Math.floor(Math.random()*9),
+               t: Math.random()<0.7?2:3});
+  nextCloud = 40 + Math.floor(Math.random()*60);
+}
+function spawnCactus(){
+  const phase = score<300?0:(score<700?1:2);
+  let type=0;
+  if(phase===0){ type = Math.random()<0.8?0:1; }
+  else if(phase===1){ const r=Math.random(); type = r<0.55?0:(r<0.9?1:2); }
+  else { const r=Math.random(); type = r<0.45?0:(r<0.8?1:2); }
+  const sp = SPR[type===0?'C1':(type===1?'C2':'C3')];
+  cacti.push({x: W+4, type:type, w:sp[0], h:sp[1]*8});
+  const gap = 62 + Math.floor(Math.random()*46) + (speed-4.5)*9;
+  nextCactus = gap;
+}
+
+/* ================= 碰撞 ================= */
+function collides(){
+  const dy = dino.jumpT>=0 ? JUMP_TABLE[dino.jumpT] : 0;
+  const dx1 = 4, dx2 = dino.duck?13:10;
+  const dTop = GROUND - (dino.duck?8:15) - dy;
+  const dBot = GROUND - dy;
+  for(const c of cacti){
+    const cx1 = c.x + 1, cx2 = c.x + c.w - 1;
+    const cTop = GROUND - c.h + 3, cBot = GROUND;
+    if(dx1 + dino.x < cx2 && dino.x + dx2 > cx1 && dTop < cBot && dBot > cTop) return true;
+  }
+  return false;
+}
+
+/* ================= 绘制 ================= */
+function clear(){ ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); }
+function drawGround(){
+  ctx.fillStyle='#FFF';
+  for(let x=0;x<W;x+=4){ ctx.fillRect(x, GROUND, 1, 1); }
+}
+function drawDino(){
+  const dy = dino.jumpT>=0 ? JUMP_TABLE[dino.jumpT] : 0;
+  const y = GROUND - dy;
+  let spr;
+  if(st===ST.OVER){
+    spr = dino.duck ? SPR.GO_DUCK : SPR.GO_STAND;
+    drawSprite(spr, dino.x, y - spr[1]*8);
+    return;
+  }
+  if(dino.duck){ spr = (dino.frame&1)?SPR.DUCK1:SPR.DUCK2; }
+  else if(dino.jumpT>=0){ spr = SPR.JUMP; }
+  else { spr = (dino.frame&1)?SPR.RUN1:SPR.RUN2; }
+  drawSprite(spr, dino.x, y - spr[1]*8);
+}
+function drawScore(){
+  const s = String(Math.floor(score));
+  const g = textGlyphs(s);
+  const x = W - glyphW(g) - 6;
+  ctx.fillStyle = '#FFF';
+  drawText(g, x, 4);
+}
+function drawBestMenu(){
+  const s = 'HI ' + Math.max(best, Math.floor(score));
+  const g = textGlyphs(s);
+  ctx.fillStyle = '#FFF';
+  drawText(g, W - glyphW(g) - 6, 4);
+}
+
+/* ================= 主循环 ================= */
+let lastT = 0;
+function frame(t){
+  requestAnimationFrame(frame);
+  if(!power){ clear(); return; }
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  flash++;
+  if(st===ST.MENU){
+    drawClouds(true);
+    drawGround();
+    drawBestMenu();
+    drawSprite(SPR.RUN1, dino.x, GROUND-16);
+    ctx.fillStyle = '#FFF';
+    const title = '小恐龙';
+    ctx.font='bold 14px "Microsoft YaHei",sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(title, 64, 20);
+    ctx.font='10px "Microsoft YaHei",sans-serif';
+    if((flash>>4)&1) ctx.fillText('按 OK / 上 键开始', 64, 32);
+    return;
+  }
+  if(st===ST.OVER){
+    drawGround();
+    drawDino();
+    drawSprite(SPR.REFRESH, 100, GROUND-24);
+    const g = textGlyphs('GAME OVER');
+    ctx.fillStyle = '#FFF';
+    drawText(g, Math.floor((W-glyphW(g))/2), 12);
+    const sc = 'SCORE ' + Math.floor(score);
+    const scg = textGlyphs(sc);
+    drawText(scg, Math.floor((W-glyphW(scg))/2), 24);
+    if(hiShown){
+      const hg = textGlyphs('HI ' + Math.max(best, Math.floor(score)));
+      drawText(hg, Math.floor((W-glyphW(hg))/2), 33);
+    }
+    ctx.fillStyle = '#FFF';
+    ctx.font='10px "Microsoft YaHei",sans-serif'; ctx.textAlign='center';
+    if((flash>>4)&1) ctx.fillText('按 OK 再来一局', 64, 56);
+    return;
+  }
+  /* RUN */
+  speed = Math.min(8, 4.5 + Math.floor(score/100)*0.125);
+  dino.frame++;
+  /* 跳跃推进 */
+  if(dino.jumpT>=0){
+    dino.jumpT++;
+    if(dino.jumpT>=JUMP_TABLE.length) dino.jumpT=-1;
+  }
+  /* 云 */
+  for(let i=clouds.length-1;i>=0;i--){
+    clouds[i].x -= speed*0.5;
+    if(clouds[i].x < -18) clouds.splice(i,1);
+  }
+  if(--nextCloud<=0) spawnCloud();
+  /* 仙人掌 */
+  for(let i=cacti.length-1;i>=0;i--){
+    cacti[i].x -= speed;
+    if(cacti[i].x < -30) cacti.splice(i,1);
+  }
+  if(--nextCactus<=0) spawnCactus();
+  /* 计分 */
+  score += speed*0.04;
+  if(Math.floor(score/100) > Math.floor((score - speed*0.04)/100)) S_SCORE();
+  /* 碰撞 */
+  if(collides()){
+    st=ST.OVER; overT=0;
+    if(score>best){ best=Math.floor(score); hiShown=true;
+      try{localStorage.setItem('dino_best', String(best));}catch(e){}
+      S_RECORD(); } else { S_DIE(); }
+    return;
+  }
+  drawClouds(false);
+  drawGround();
+  for(const c of cacti){ drawSprite(SPR[c.type===0?'C1':(c.type===1?'C2':'C3')], c.x, GROUND-c.h); }
+  drawDino();
+  drawScore();
+}
+function drawClouds(any){
+  ctx.fillStyle = '#FFF';
+  for(const cl of clouds){
+    const sp = cl.t===2?SPR.CLOUD2:SPR.CLOUD3;
+    drawSprite(sp, cl.x, cl.y);
+  }
+}
+
+/* ================= 输入 ================= */
+function pressKey(k){
+  ensureAudio();
+  if(k==='ok') doJump();
+  else if(k==='up'){ if(st===ST.MENU){ resetRun(); S_JUMP(); } else if(st===ST.OVER){ resetRun(); S_JUMP(); } else doJump(); }
+  else if(k==='down'){ setDuck(true); }
+}
+function releaseKey(k){
+  if(k==='down') setDuck(false);
+}
+/* 摇杆 & OK 按钮 */
+document.querySelectorAll('.dpad button,.btn-ok').forEach(b=>{
+  const k = b.dataset.k;
+  const down = e=>{ e.preventDefault(); b.classList.add('pressed'); pressKey(k); };
+  const up = e=>{ b.classList.remove('pressed'); releaseKey(k); };
+  b.addEventListener('mousedown', down);
+  b.addEventListener('mouseup', up);
+  b.addEventListener('mouseleave', up);
+  b.addEventListener('touchstart', down, {passive:false});
+  b.addEventListener('touchend', up);
+  b.addEventListener('touchcancel', up);
+});
+/* 电源开关 */
+powerEl.addEventListener('click', ()=>{
+  ensureAudio();
+  power = !power;
+  consoleEl.classList.toggle('on', power);
+  powerEl.classList.toggle('on', power);
+  if(power){ startMenu(); } else { clear(); }
+});
+/* 键盘 */
+const keyMap = {ArrowUp:'up', KeyW:'up', ArrowDown:'down', KeyS:'down',
+                ArrowLeft:'left', ArrowRight:'right',
+                Space:'ok', Enter:'ok', KeyZ:'ok', KeyP:'power'};
+document.addEventListener('keydown', e=>{
+  if(e.repeat) return;
+  const k = keyMap[e.code];
+  if(!k) return;
+  e.preventDefault();
+  if(k==='power'){ powerEl.click(); return; }
+  if(k==='left'||k==='right') return;
+  const b = document.querySelector(`.dpad [data-k="${k}"],.btn-ok[data-k="${k}"]`);
+  if(b) b.classList.add('pressed');
+  pressKey(k);
+});
+document.addEventListener('keyup', e=>{
+  const k = keyMap[e.code];
+  if(!k) return;
+  if(k==='left'||k==='right'||k==='power') return;
+  const b = document.querySelector(`.dpad [data-k="${k}"],.btn-ok[data-k="${k}"]`);
+  if(b) b.classList.remove('pressed');
+  releaseKey(k);
+});
+
+/* 启动 */
+clear();
+requestAnimationFrame(frame);
+</script>
 </body>
 </html>
