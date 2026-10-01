@@ -3,174 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小恐龙用户手册 · 在线模拟器</title>
+<title>小恐龙用户手册 · 真机模拟环境</title>
 <style>
   :root{
-    --blue:#1A73E8; --blue-dark:#0B57D0; --blue-deep:#0A3E8C;
-    --blue-soft:#E8F0FE; --blue-bg:#F5F8FE; --ink:#202124; --mute:#5F6368;
-    --line:#DCE3F0; --white:#FFFFFF; --accent:#F9AB00; --console:#F7B500;
-    --console-dark:#E0A300;
+    --blue:#1A73E8; --blue-dark:#0B57D0; --blue-deep:#0A3E8C; --blue-deeper:#072E66;
+    --blue-soft:#E8F0FE; --blue-bg:#F4F8FF; --ink:#1B2330; --mute:#5F6B7A;
+    --line:#DCE6F5; --white:#FFFFFF; --accent:#F9AB00;
+    --console:#F7B500; --console-dark:#E0A300; --console-edge:#C48A00;
+    --shadow-sm:0 1px 2px rgba(16,42,90,.06);
+    --shadow-md:0 6px 20px rgba(16,42,90,.09);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  body{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;
-       background:var(--blue-bg); color:var(--ink); line-height:1.75;}
-  .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"Inter","Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+       background:var(--blue-bg); color:var(--ink); line-height:1.72;}
 
-  /* 导航 */
-  nav{position:sticky;top:0;z-index:50;background:var(--blue-dark);color:#fff;
-      box-shadow:0 2px 10px rgba(11,87,208,.25);}
-  .nav-in{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;
-          align-items:center;gap:14px;flex-wrap:wrap;}
-  .nav-brand{font-weight:700;font-size:16px;letter-spacing:.5px;white-space:nowrap;}
-  .nav-brand .dot{color:#FFD166;}
-  .nav-links{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;}
-  .nav-links a{color:#DCE8FF;text-decoration:none;font-size:13px;padding:6px 10px;
-               border-radius:8px;transition:background .15s;}
-  .nav-links a:hover{background:rgba(255,255,255,.14);color:#fff;}
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,87,208,.92);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      box-shadow:0 2px 14px rgba(11,87,208,.28);}
+  .nav-in{max-width:880px;margin:0 auto;padding:11px 18px;display:flex;
+          align-items:center;gap:12px;flex-wrap:wrap;}
+  .nav-brand{font-weight:800;font-size:16px;letter-spacing:.4px;color:#fff;white-space:nowrap;}
+  .nav-links{display:flex;gap:3px;flex-wrap:wrap;margin-left:auto;}
+  .nav-links a{color:#DCE8FF;text-decoration:none;font-size:13px;padding:6px 11px;
+               border-radius:9px;transition:background .15s,color .15s;}
+  .nav-links a:hover{background:rgba(255,255,255,.16);color:#fff;}
 
-  /* Hero */
-  .hero{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-deep) 100%);
-        color:#fff;border-radius:0 0 26px 26px;padding:52px 24px 44px;text-align:center;
+  .hero{background:linear-gradient(140deg,var(--blue-dark) 0%,var(--blue-deep) 55%,var(--blue-deeper) 100%);
+        color:#fff;border-radius:0 0 30px 30px;padding:60px 24px 52px;text-align:center;
         position:relative;overflow:hidden;}
-  .hero::before{content:"";position:absolute;left:-60px;top:-60px;width:240px;height:240px;
-                border-radius:50%;background:rgba(255,255,255,.06);}
-  .hero::after{content:"";position:absolute;right:-40px;bottom:-80px;width:220px;height:220px;
-               border-radius:50%;background:rgba(255,255,255,.05);}
-  .hero .tag{font-size:13px;letter-spacing:3px;color:#AECBFF;margin-bottom:10px;}
-  .hero h1{font-size:34px;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
-  .hero .sub{font-size:16px;color:#DCE8FF;margin-bottom:8px;}
-  .hero .meta{font-size:12.5px;color:#AECBFF;}
-  .hero-btns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
-  .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;
-       font-size:14.5px;padding:11px 22px;border-radius:12px;transition:transform .12s,box-shadow .12s;}
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.05);}
+  .hero::before{width:300px;height:300px;left:-90px;top:-110px;}
+  .hero::after{width:260px;height:260px;right:-70px;bottom:-120px;}
+  .hero .orb{position:absolute;width:120px;height:120px;border-radius:50%;
+             background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.10),transparent 70%);}
+  .hero .tag{font-size:13px;letter-spacing:3.5px;color:#AECBFF;margin-bottom:12px;font-weight:600;}
+  .hero h1{font-size:38px;font-weight:900;letter-spacing:2px;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.18);}
+  .hero .sub{font-size:17px;color:#DCE8FF;margin-bottom:10px;}
+  .hero .chips{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+  .chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);color:#E8F1FF;
+        font-size:12px;padding:4px 14px;border-radius:20px;}
+  .hero-btns{display:flex;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;
+       font-size:15px;padding:12px 26px;border-radius:14px;transition:transform .15s,box-shadow .15s;}
   .btn:hover{transform:translateY(-2px);}
-  .btn-play{background:var(--accent);color:#3D2A00;box-shadow:0 4px 14px rgba(249,171,0,.35);}
-  .btn-dl{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);}
-  .btn-dl:hover{background:rgba(255,255,255,.24);}
+  .btn-play{background:linear-gradient(180deg,#FFC24A,#F9AB00);color:#4A3200;
+            box-shadow:0 8px 22px rgba(249,171,0,.4);}
+  .btn-dl{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4);}
+  .btn-dl:hover{background:rgba(255,255,255,.22);}
 
-  /* 区块卡片 */
-  section{margin:26px 0 0;background:var(--white);border:1px solid var(--line);
-          border-radius:18px;padding:24px 22px;box-shadow:0 2px 8px rgba(26,115,232,.05);}
-  h2{font-size:20px;color:var(--blue-dark);margin-bottom:6px;display:flex;align-items:center;gap:10px;}
-  h2 .ico{width:26px;height:26px;border-radius:8px;background:var(--blue-soft);display:inline-flex;
-          align-items:center;justify-content:center;font-size:14px;}
-  h3{font-size:15.5px;color:var(--blue-deep);margin:16px 0 6px;}
-  p{font-size:14.5px;margin:6px 0;color:var(--ink);}
+  .wrap{max-width:880px;margin:0 auto;padding:0 16px 60px;}
+  section{margin:28px 0 0;background:var(--white);border:1px solid var(--line);
+          border-radius:20px;padding:26px 24px;box-shadow:var(--shadow-sm);transition:box-shadow .2s;}
+  section:hover{box-shadow:var(--shadow-md);}
+  h2{font-size:21px;color:var(--blue-dark);margin-bottom:8px;display:flex;align-items:center;gap:11px;font-weight:800;}
+  h2 .ico{width:32px;height:32px;border-radius:10px;background:var(--blue-soft);display:inline-flex;
+          align-items:center;justify-content:center;font-size:17px;box-shadow:inset 0 0 0 1px var(--line);}
+  h3{font-size:16px;color:var(--blue-deep);margin:18px 0 7px;font-weight:700;}
+  p{font-size:14.5px;margin:7px 0;color:var(--ink);}
   .mute{color:var(--mute);font-size:13px;}
-  table{width:100%;border-collapse:collapse;margin:12px 0 6px;font-size:14px;}
-  th{color:var(--blue-dark);text-align:left;font-weight:600;padding:9px 8px;
-     border-bottom:2px solid var(--blue);background:var(--blue-soft);}
-  td{padding:9px 8px;border-bottom:1px solid var(--line);}
+  table{width:100%;border-collapse:collapse;margin:12px 0 8px;font-size:14px;}
+  th{color:var(--blue-dark);text-align:left;font-weight:700;padding:10px 10px;
+     border-bottom:2px solid var(--blue);background:var(--blue-soft);font-size:13.5px;}
+  td{padding:10px 10px;border-bottom:1px solid var(--line);}
   tr:last-child td{border-bottom:none;}
-  tr:nth-child(even) td{background:#F8FAFF;}
-  .kbd{display:inline-block;background:var(--blue-dark);color:#fff;border-radius:6px;
-       padding:1px 9px;font-size:12.5px;margin:0 2px;font-weight:600;}
+  tr:nth-child(even) td{background:#F8FBFF;}
+  .kbd{display:inline-block;background:var(--blue-dark);color:#fff;border-radius:7px;
+       padding:1px 10px;font-size:12.5px;margin:0 2px;font-weight:700;box-shadow:0 1px 0 #072E66;}
   .pill{display:inline-block;background:var(--blue-soft);color:var(--blue-dark);
-        border-radius:20px;padding:2px 12px;font-size:12.5px;margin:2px 4px 2px 0;font-weight:600;}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:14px;}
-  .card{background:#F8FAFF;border:1px solid var(--line);border-radius:14px;padding:14px 16px;}
-  .card b{color:var(--blue-dark);font-size:15px;display:block;margin-bottom:4px;}
+        border-radius:20px;padding:2px 13px;font-size:12.5px;margin:2px 4px 2px 0;font-weight:700;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;margin-top:16px;}
+  .card{background:linear-gradient(180deg,#F9FCFF,#F3F8FF);border:1px solid var(--line);
+        border-radius:15px;padding:16px 18px;transition:transform .15s,box-shadow .15s;}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+  .card b{color:var(--blue-dark);font-size:15px;display:block;margin-bottom:5px;}
   .card span{font-size:13px;color:var(--mute);}
 
-  /* 原理图 */
   .schematic{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:14px;}
-  .schematic .frame{width:100%;border:1px solid var(--line);border-radius:14px;overflow:hidden;
-                    background:#F0F4FB;padding:10px;text-align:center;}
-  .schematic img{max-width:100%;height:auto;border-radius:8px;cursor:zoom-in;}
-  .zoom{display:inline-flex;align-items:center;gap:6px;background:var(--blue-soft);color:var(--blue-dark);
-        text-decoration:none;font-size:13.5px;font-weight:600;padding:8px 18px;border-radius:10px;}
+  .schematic .frame{width:100%;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+                    background:#EEF3FB;padding:12px;text-align:center;}
+  .schematic img{max-width:100%;height:auto;border-radius:10px;cursor:zoom-in;display:block;margin:0 auto;}
+  .zoom{display:inline-flex;align-items:center;gap:7px;background:var(--blue-soft);color:var(--blue-dark);
+        text-decoration:none;font-size:13.5px;font-weight:700;padding:9px 20px;border-radius:12px;
+        box-shadow:inset 0 0 0 1px var(--line);transition:background .15s;}
   .zoom:hover{background:#D8E6FC;}
 
-  /* FAQ */
-  details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:#F8FAFF;}
-  details summary{cursor:pointer;font-weight:600;color:var(--blue-deep);font-size:14.5px;list-style:none;}
+  details{border:1px solid var(--line);border-radius:13px;padding:13px 17px;margin:11px 0;
+          background:#F9FCFF;transition:box-shadow .15s;}
+  details:hover{box-shadow:var(--shadow-sm);}
+  details summary{cursor:pointer;font-weight:700;color:var(--blue-deep);font-size:14.5px;list-style:none;}
   details summary::before{content:"▸ ";color:var(--blue);}
   details[open] summary::before{content:"▾ ";}
   details p{font-size:13.5px;color:var(--mute);margin-top:8px;}
 
-  footer{text-align:center;color:var(--mute);font-size:12.5px;margin-top:36px;padding:0 16px;}
-  footer .ver{color:var(--blue-dark);font-weight:700;}
-  footer .line{width:48px;height:3px;background:var(--blue);margin:14px auto;border-radius:2px;}
+  footer{text-align:center;color:var(--mute);font-size:12.5px;margin-top:40px;padding:0 16px;}
+  footer .ver{color:var(--blue-dark);font-weight:800;}
+  footer .line{width:52px;height:3px;background:linear-gradient(90deg,var(--blue),#7FB2FF);
+               margin:16px auto;border-radius:2px;}
 
-  /* ============ 模拟器 ============ */
+  /* ============ 真机模拟环境（0.96寸 128×64 OLED，机身 27.5×42.5cm 等比） ============ */
   #sim{scroll-margin-top:70px;}
-  .sim-intro{display:flex;gap:10px;align-items:flex-start;background:var(--blue-soft);
-             border-radius:12px;padding:12px 16px;margin:12px 0 18px;font-size:13.5px;color:var(--blue-deep);}
+  .sim-intro{display:flex;gap:11px;align-items:flex-start;background:linear-gradient(135deg,var(--blue-soft),#F0F7FF);
+             border:1px solid #D0E3FF;border-radius:14px;padding:13px 17px;margin:12px 0 20px;
+             font-size:13.5px;color:var(--blue-deep);}
   .sim-intro b{color:var(--blue-dark);}
-  .stage{display:flex;justify-content:center;padding:18px 0 6px;}
-  .console{position:relative;width:352px;background:linear-gradient(180deg,var(--console) 0%,var(--console-dark) 100%);
-           border-radius:26px;padding:14px 16px 18px;box-shadow:0 14px 34px rgba(122,93,0,.28),
-           inset 0 2px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(160,116,0,.5);
-           user-select:none;-webkit-user-select:none;}
-  /* 挂环 */
-  .strap{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:34px;height:22px;
-         border:5px solid var(--console-dark);border-bottom:none;border-radius:16px 16px 0 0;}
-  .console .brand{text-align:center;font-size:9px;letter-spacing:3px;color:#7A5C00;margin-bottom:8px;font-weight:700;}
-  /* 屏幕 */
-  .screen-frame{background:#1C1C1E;border-radius:14px;padding:10px;box-shadow:inset 0 2px 6px rgba(0,0,0,.6);}
-  .screen-inner{background:#000;border-radius:8px;overflow:hidden;position:relative;}
-  canvas#oled{display:block;width:320px;height:160px;image-rendering:pixelated;image-rendering:crisp-edges;}
-  .scr-led{position:absolute;top:8px;right:10px;width:7px;height:7px;border-radius:50%;
-           background:#3A3A3A;transition:background .3s;}
-  .console.on .scr-led{background:#39D353;box-shadow:0 0 6px #39D353;}
-  /* 控制区 */
-  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:0 8px;}
-  /* 摇杆 */
-  .dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:4px;}
-  .dpad button{width:44px;height:44px;border:none;border-radius:12px;background:linear-gradient(180deg,#3A3A3C,#26262A);
-               color:#C9C9CF;font-size:15px;font-weight:700;box-shadow:0 3px 0 #141417,0 4px 8px rgba(0,0,0,.35);
-               cursor:pointer;transition:transform .06s,box-shadow .06s,background .06s;display:flex;
-               align-items:center;justify-content:center;}
-  .dpad button:active,.dpad button.pressed{transform:translateY(3px);box-shadow:0 1px 0 #141417;
-               background:linear-gradient(180deg,#4A4A4E,#333338);color:#fff;}
+  .stage{display:flex;justify-content:center;padding:10px 0 4px;
+         background:radial-gradient(1200px 400px at 50% -60px,#EAF2FF,transparent);}
+
+  .console{position:relative;width:340px;height:525px;
+           background:linear-gradient(180deg,var(--console) 0%,var(--console-dark) 100%);
+           border-radius:30px;padding:20px 12px 16px;
+           box-shadow:0 20px 50px rgba(140,105,0,.35),
+           inset 0 3px 0 rgba(255,255,255,.5),
+           inset 0 -4px 0 rgba(160,116,0,.55),
+           0 0 0 3px rgba(255,255,255,.15);
+           user-select:none;-webkit-user-select:none;display:flex;flex-direction:column;}
+  .strap{position:absolute;top:-18px;left:9%;transform:none;width:44px;height:26px;
+         border:6px solid var(--console-edge);border-bottom:none;border-radius:18px 18px 0 0;
+         background:linear-gradient(180deg,rgba(0,0,0,.12),transparent);}
+  .console .brand{text-align:center;font-size:10px;letter-spacing:4px;color:#7A5C00;
+                  margin-bottom:12px;font-weight:800;}
+  .screen-frame{background:linear-gradient(180deg,#232327,#17171A);border-radius:18px;
+                padding:14px;box-shadow:inset 0 3px 10px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.18);}
+  .screen-inner{background:#000;border-radius:10px;overflow:hidden;position:relative;}
+  canvas#oled{display:block;width:292px;height:146px;image-rendering:pixelated;image-rendering:crisp-edges;}
+  .scr-led{position:absolute;top:9px;right:11px;width:8px;height:8px;border-radius:50%;
+           background:#3A3A3A;transition:background .3s,box-shadow .3s;}
+  .console.on .scr-led{background:#39D353;box-shadow:0 0 8px #39D353;}
+  .scr-cap{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:8px;
+           color:#4A4A50;letter-spacing:1px;}
+
+  .controls{flex:1;display:flex;justify-content:space-between;align-items:center;
+            margin-top:18px;padding:0 14px;}
+  .dpad{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:5px;}
+  .dpad button{width:50px;height:50px;border:none;border-radius:14px;cursor:pointer;
+               background:linear-gradient(180deg,#3D3D41,#242428);
+               color:#C9C9CF;font-size:17px;font-weight:700;
+               box-shadow:0 4px 0 #121214,0 6px 12px rgba(0,0,0,.4);
+               transition:transform .05s,box-shadow .05s,background .05s,color .05s;
+               display:flex;align-items:center;justify-content:center;}
+  .dpad button:active,.dpad button.pressed{transform:translateY(4px);box-shadow:0 1px 0 #121214;
+               background:linear-gradient(180deg,#4E4E54,#333338);color:#fff;}
   .d-up{grid-column:2;grid-row:1;}
   .d-left{grid-column:1;grid-row:2;}
   .d-right{grid-column:3;grid-row:2;}
   .d-down{grid-column:2;grid-row:3;}
-  .dpad .mid{grid-column:2;grid-row:2;width:44px;height:44px;}
-  /* 右侧：OK + 开关 */
-  .rside{display:flex;flex-direction:column;align-items:center;gap:16px;}
-  .btn-ok{width:74px;height:74px;border-radius:50%;border:none;cursor:pointer;
-          background:radial-gradient(circle at 35% 30%,#E4572E,#B03A17);
-          box-shadow:0 5px 0 #8A2C10,0 6px 12px rgba(0,0,0,.3),inset 0 2px 2px rgba(255,255,255,.35);
-          color:#fff;font-weight:800;font-size:16px;letter-spacing:1px;transition:transform .06s,box-shadow .06s;}
-  .btn-ok:active,.btn-ok.pressed{transform:translateY(5px);box-shadow:0 1px 0 #8A2C10;}
-  /* 开关 */
-  .switch-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
-  .switch-wrap .lbl{font-size:9px;color:#7A5C00;font-weight:700;letter-spacing:1px;}
-  .switch{position:relative;width:52px;height:26px;background:#B8A24C;border-radius:13px;
-          box-shadow:inset 0 2px 4px rgba(0,0,0,.35);cursor:pointer;transition:background .2s;}
-  .switch.on{background:#4C8F3C;}
-  .knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;
-        background:linear-gradient(180deg,#fff,#D8D8D8);box-shadow:0 1px 3px rgba(0,0,0,.4);
+  .dpad .mid{grid-column:2;grid-row:2;}
+  .rside{display:flex;flex-direction:column;align-items:center;gap:22px;}
+  .btn-ok{width:82px;height:82px;border-radius:50%;border:none;cursor:pointer;
+          background:radial-gradient(circle at 35% 28%,#EF6035,#B03A17);
+          box-shadow:0 6px 0 #8A2C10,0 10px 18px rgba(0,0,0,.35),inset 0 2px 3px rgba(255,255,255,.4);
+          color:#fff;font-weight:800;font-size:17px;letter-spacing:1px;
+          transition:transform .05s,box-shadow .05s;}
+  .btn-ok:active,.btn-ok.pressed{transform:translateY(6px);box-shadow:0 1px 0 #8A2C10;}
+  .switch-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .switch-wrap .lbl{font-size:9px;color:#7A5C00;font-weight:800;letter-spacing:1.5px;}
+  .switch{position:relative;width:58px;height:29px;background:linear-gradient(180deg,#B8A24C,#A8913C);
+          border-radius:15px;box-shadow:inset 0 3px 6px rgba(0,0,0,.4);cursor:pointer;transition:background .2s;}
+  .switch.on{background:linear-gradient(180deg,#54A044,#3E7E30);}
+  .knob{position:absolute;top:2.5px;left:2.5px;width:24px;height:24px;border-radius:50%;
+        background:linear-gradient(180deg,#fff,#D6D6D6);box-shadow:0 1px 4px rgba(0,0,0,.5);
         transition:left .18s;}
-  .switch.on .knob{left:28px;}
-  .switch-lbls{display:flex;justify-content:space-between;width:52px;font-size:8px;color:#7A5C00;font-weight:700;}
-  /* 控制说明 */
-  .sim-help{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;}
-  .sim-help .h{background:#F8FAFF;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--mute);}
+  .switch.on .knob{left:31px;}
+  .switch-lbls{display:flex;justify-content:space-between;width:58px;font-size:8.5px;color:#7A5C00;font-weight:800;}
+
+  .sim-help{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:11px;margin-top:20px;}
+  .sim-help .h{background:#F9FCFF;border:1px solid var(--line);border-radius:13px;
+               padding:11px 15px;font-size:13px;color:var(--mute);}
   .sim-help .h b{color:var(--blue-dark);}
-  @media (max-width:520px){
-    .hero h1{font-size:27px;}
-    section{padding:20px 16px;}
-    .console{width:320px;}
-    canvas#oled{width:292px;height:146px;}
+
+  @media (max-width:560px){
+    .hero h1{font-size:29px;}
+    section{padding:21px 17px;}
+    .console{transform:scale(.94);transform-origin:top center;}
+    .sim-help{grid-template-columns:1fr 1fr;}
   }
+
+  /* ============ BCDEF 优化（原汁原味 · 像素细节） ============ */
+  .sno{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;
+       background:var(--blue-deep);color:#fff;border-radius:9px;font-family:"Consolas","Courier New",monospace;
+       font-weight:800;font-size:15px;letter-spacing:.5px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.22),0 2px 0 #041E44;}
+  .keypad{display:flex;gap:26px;align-items:center;justify-content:center;margin:18px 0 8px;padding:16px;
+          background:linear-gradient(180deg,#F9FCFF,#EEF4FC);border:1px solid var(--line);border-radius:16px;}
+  .kpd{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:6px;}
+  .kpd i{display:flex;align-items:center;justify-content:center;border-radius:12px;font-style:normal;
+         background:linear-gradient(180deg,#3D3D41,#242428);color:#C9C9CF;font-weight:800;font-size:16px;
+         box-shadow:0 4px 0 #121214,0 6px 10px rgba(0,0,0,.28);}
+  .kpd .k-u{grid-column:2;grid-row:1;}
+  .kpd .k-l{grid-column:1;grid-row:2;}
+  .kpd .k-r{grid-column:3;grid-row:2;}
+  .kpd .k-d{grid-column:2;grid-row:3;}
+  .kpd .k-ok{grid-column:2;grid-row:2;border-radius:50%;background:radial-gradient(circle at 35% 28%,#EF6035,#B03A17);
+             color:#fff;box-shadow:0 4px 0 #8A2C10,0 6px 10px rgba(0,0,0,.28);font-size:13px;}
+  .keypad .side-lbl{font-size:12.5px;color:var(--mute);line-height:2;text-align:center;}
+  .keypad .side-lbl b{color:var(--blue-dark);display:block;}
+  .bars{display:flex;gap:26px;flex-wrap:wrap;margin:16px 0 6px;padding:14px 18px;
+        background:linear-gradient(180deg,#F9FCFF,#EEF4FC);border:1px solid var(--line);border-radius:16px;}
+  .bar-item{display:flex;align-items:center;gap:11px;font-size:13.5px;color:var(--ink);}
+  .bar-item b{color:var(--blue-dark);min-width:34px;}
+  .bar-cells{display:flex;gap:4px;}
+  .bar-cells i{width:15px;height:15px;border-radius:3px;background:#D5E2F5;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);}
+  .bar-cells i.on{background:var(--blue);box-shadow:inset 0 -2px 0 var(--blue-deep);}
+  .pxfigs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin:16px 0 4px;}
+  .pxfig{background:linear-gradient(180deg,#FBFDFF,#EEF4FC);border:1px solid var(--line);border-radius:14px;
+         padding:12px 14px;text-align:center;}
+  .pxfig canvas{display:block;margin:0 auto 8px;image-rendering:pixelated;image-rendering:crisp-edges;}
+  .pxfig span{font-size:12.5px;color:var(--mute);}
+  .pxfig b{display:block;font-size:13.5px;color:var(--blue-dark);margin-bottom:3px;}
+  .timeline{margin:16px 0 6px;padding:16px 18px;background:linear-gradient(180deg,#F9FCFF,#EEF4FC);
+            border:1px solid var(--line);border-radius:16px;}
+  .tl-track{display:flex;align-items:stretch;height:44px;border-radius:9px;overflow:hidden;
+            box-shadow:inset 0 -3px 0 rgba(0,0,0,.10);}
+  .tl-seg{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;line-height:1.35;}
+  .tl-seg small{font-size:10.5px;font-weight:500;opacity:.92;}
+  .tl-a{background:var(--blue);}
+  .tl-b{background:var(--accent);}
+  .tl-c{background:var(--blue-deep);}
+  .tl-loop{text-align:center;margin-top:9px;font-size:12.5px;color:var(--mute);}
+  .tl-loop b{color:var(--blue-dark);}
+  .nav-links a.active{background:#fff;color:var(--blue-dark);}
+  .nav-burger{display:none;}
+  #toTop{position:fixed;right:22px;bottom:26px;z-index:60;width:46px;height:46px;border:none;cursor:pointer;
+         background:var(--blue-dark);color:#fff;border-radius:11px;font-size:19px;font-weight:800;
+         box-shadow:0 6px 18px rgba(11,87,208,.4),inset 0 -3px 0 #072E66;
+         opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .2s,transform .2s;}
+  #toTop.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  #toTop:active{transform:translateY(2px);box-shadow:0 2px 8px rgba(11,87,208,.3);}
+  body{background-image:
+       linear-gradient(rgba(11,87,208,.028) 1px,transparent 1px),
+       linear-gradient(90deg,rgba(11,87,208,.028) 1px,transparent 1px);
+       background-size:22px 22px;}
+  .btn:active,.zoom:active{transform:translateY(2px);box-shadow:none;}
+  .card{transition:box-shadow .18s;}
+  .card:hover{transform:none;box-shadow:var(--shadow-md);}
+  .btn:hover{transform:none;}
+  .btn-play:hover{filter:brightness(1.06);}
+  .btn-dl:hover{background:rgba(255,255,255,.22);transform:none;}
+  .chip.ver{background:#111;border-color:#111;color:#FFF;font-family:"Consolas","Courier New",monospace;
+            letter-spacing:1.5px;box-shadow:inset 0 0 0 2px #333,0 3px 0 #000;border-radius:7px;}
+  details{transition:background .15s,box-shadow .15s;}
+  details[open]{background:#F0F6FF;box-shadow:var(--shadow-sm);}
+  details summary:hover{color:var(--blue);}
+  footer .line{width:140px;height:6px;margin:20px auto;border-radius:0;
+               background:repeating-linear-gradient(90deg,var(--blue) 0 5px,transparent 5px 9px);}
+  footer .copy{margin-top:6px;font-size:11.5px;opacity:.85;}
+  @media (max-width:720px){
+    .nav-in{flex-wrap:nowrap;}
+    .nav-burger{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
+                margin-left:auto;border:none;border-radius:10px;background:rgba(255,255,255,.15);
+                color:#fff;font-size:19px;cursor:pointer;flex:none;}
+    .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:2px;
+               background:var(--blue-deep);padding:8px 12px 12px;box-shadow:0 12px 24px rgba(7,46,102,.35);}
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:10px 14px;border-radius:9px;}
+    .nav-links a:hover{background:rgba(255,255,255,.12);}
+    .nav-links a.active{background:#fff;color:var(--blue-dark);}
+    .wrap{max-width:100%;}
+    table{display:block;overflow-x:auto;white-space:nowrap;}
+    .keypad,.bars{flex-direction:column;align-items:flex-start;}
+    .pxfigs{grid-template-columns:1fr;}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --blue:#66A8FF; --blue-dark:#7FB2FF; --blue-deep:#3D7ADB; --blue-deeper:#1B3F7A;
+      --blue-soft:#16263F; --blue-bg:#0E1524; --ink:#E6ECF7; --mute:#93A3BC;
+      --line:#2A3A57; --white:#141C2E; --accent:#FFC24A;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4); --shadow-md:0 6px 20px rgba(0,0,0,.45);
+    }
+    body{background-image:
+         linear-gradient(rgba(102,168,255,.04) 1px,transparent 1px),
+         linear-gradient(90deg,rgba(102,168,255,.04) 1px,transparent 1px);
+         background-size:22px 22px;}
+    section{background:#141C2E;}
+    section:hover{box-shadow:var(--shadow-md);}
+    .card{background:linear-gradient(180deg,#182338,#121A2A);}
+    tr:nth-child(even) td{background:#182338;}
+    .keypad,.bars,.pxfig,.timeline{background:linear-gradient(180deg,#182338,#121A2A);}
+    .bar-cells i{background:#26344F;}
+    .sno{box-shadow:inset 0 -2px 0 rgba(0,0,0,.35),0 2px 0 #041E44;}
+    .chip.ver{background:#000;box-shadow:inset 0 0 0 2px #3A3A3A,0 3px 0 #000;}
+  }
+
+  /* ============ PCB 图查看 ============ */
+  .pcb-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:8px;}
+  .pcb-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+            box-shadow:var(--shadow-sm);}
+  .pcb-card figcaption{font-size:12.5px;color:var(--blue-dark);text-align:center;padding:9px 6px;
+                       background:#F4F9FF;border-top:1px solid var(--line);}
+  .pcb-card img{width:100%;height:auto;display:block;background:#F6F9FB;cursor:zoom-in;}
+  @media (max-width:560px){.pcb-wrap{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
+<button id="toTop" aria-label="回到顶部">↑</button>
 
 <nav>
   <div class="nav-in">
-    <div class="nav-brand">🦖 小恐龙<span class="dot">·</span>用户手册</div>
-    <div class="nav-links">
+    <div class="nav-brand"><span class="dino">🦖</span> 小恐龙 · 用户手册</div>
+    <button class="nav-burger" id="navBurger" aria-label="菜单">☰</button>
+    <div class="nav-links" id="navLinks">
       <a href="#sim">模拟器</a>
       <a href="#quick">快速上手</a>
       <a href="#keys">按键操作</a>
       <a href="#play">游戏玩法</a>
       <a href="#special">特殊模式</a>
       <a href="#settings">设置界面</a>
-      <a href="#schematic">原理图</a>
+      <a href="#pcb">PCB 图</a><a href="#schematic">原理图</a>
       <a href="#faq">常见问题</a>
     </div>
   </div>
@@ -179,21 +317,28 @@
 <div class="wrap">
 
   <div class="hero">
+    <div class="orb" style="left:8%;top:16%;"></div>
+    <div class="orb" style="right:6%;bottom:12%;width:90px;height:90px;"></div>
     <div class="tag">TINY DINO · 开源迷你游戏机</div>
     <h1>小恐龙用户手册</h1>
     <div class="sub">仿谷歌断网小恐龙 · 极简像素跑酷</div>
-    <div class="meta">版本 Q-3 · CH32V003 · SSD1306 OLED 128×64 · 2026</div>
+    <div class="chips">
+      <span class="chip ver">版本 Q-3</span>
+      <span class="chip">CH32V003</span>
+      <span class="chip">0.96 英寸 OLED 128×64</span>
+      <span class="chip">2026</span>
+    </div>
     <div class="hero-btns">
       <a class="btn btn-play" href="#sim">▶ 在线试玩模拟器</a>
       <a class="btn btn-dl" href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@f5d2eecdb301cf6750b46b6cd4f1d20cb8dd3ff0/dino-manual.pdf">⬇ 下载说明书 PDF</a>
     </div>
   </div>
 
-  <!-- ============ 模拟器 ============ -->
+  <!-- ============ 真机模拟环境 ============ -->
   <section id="sim">
-    <h2><span class="ico">🎮</span>在线模拟器</h2>
+    <h2><span class="sno">01</span><span class="ico">🎮</span>真机模拟环境</h2>
     <div class="sim-intro">
-      <span>💡 <b>先拨右侧的电源开关开机</b>，屏幕点亮后才能玩。摇杆 <b>上推</b> 跳跃、<b>下推</b> 下蹲，右侧 <b>OK</b> 键开始 / 跳跃。电脑上也可用键盘：<b>↑/空格</b> 跳，<b>↓</b> 蹲，<b>回车</b> OK。</span>
+      <span>⚙ <b>本模拟器直接照搬单片机 main.c 代码</b>：同样的帧缓冲渲染、随机序列、速度计分、特殊模式、飞鸟与全部界面，行为和烧录到真机一致。屏幕为 <b>0.96 英寸 OLED（128×64，2:1）</b>，机身按实物 <b>27.5 × 42.5cm</b> 等比绘制。<b>先拨右侧电源开关开机</b>。键盘：<b>↑/空格</b> 跳 · <b>↓</b> 蹲 · <b>←→</b> 左右 · <b>回车</b> OK · <b>P</b> 电源。长按 OK（空格）5 秒＝长按 OK 5 秒功能。<b>🔊 音效</b>：随设置里的音量档位，1 档静音、5 档最大，浏览器需先点击任意按键才能出声。</span>
     </div>
 
     <div class="stage">
@@ -204,6 +349,7 @@
           <div class="screen-inner">
             <canvas id="oled" width="128" height="64"></canvas>
             <div class="scr-led"></div>
+            <div class="scr-cap">0.96" OLED</div>
           </div>
         </div>
         <div class="controls">
@@ -217,9 +363,7 @@
           <div class="rside">
             <button class="btn-ok" data-k="ok" aria-label="OK">OK</button>
             <div class="switch-wrap">
-              <div class="switch" id="power" title="电源开关">
-                <div class="knob"></div>
-              </div>
+              <div class="switch" id="power" title="电源开关"><div class="knob"></div></div>
               <div class="switch-lbls"><span>OFF</span><span>ON</span></div>
             </div>
           </div>
@@ -228,36 +372,42 @@
     </div>
 
     <div class="sim-help">
-      <div class="h"><b>🔌 电源</b>：右侧拨动开关 ON / OFF，OFF 时屏幕熄灭。</div>
+      <div class="h"><b>🔌 电源</b>：右侧拨动开关，OFF 时屏幕熄灭。</div>
       <div class="h"><b>🕹 摇杆</b>：上＝跳跃，下＝下蹲（按住持续蹲）。</div>
-      <div class="h"><b>🔴 OK 键</b>：开始游戏 / 跳跃 / 结束后重开。</div>
-      <div class="h"><b>⌨ 键盘</b>：↑/空格 跳 · ↓ 蹲 · 回车 OK · P 电源。</div>
+      <div class="h"><b>🔴 OK</b>：开始 / 跳跃 / 重开；长按 5 秒＝重启或还原。</div>
+      <div class="h"><b>⌨ 键盘</b>：↑/空格 跳 · ↓ 蹲 · ←→ 左右 · 回车 OK · P 电源。</div>
     </div>
   </section>
 
   <!-- ============ 快速上手 ============ -->
   <section id="quick">
-    <h2><span class="ico">🚀</span>快速上手</h2>
+    <h2><span class="sno">02</span><span class="ico">🚀</span>快速上手</h2>
     <p>开机即进入开始界面，按 <span class="kbd">OK</span> 或 <span class="kbd">上</span> 起跑。游戏里只有两件事：<b>跳过去</b>，或者 <b>蹲下来</b>。碰到障碍结束，再按 OK 就能重来。</p>
     <div class="cards">
       <div class="card"><b>屏幕</b><span>0.96 英寸 OLED · 128×64</span></div>
-      <div class="card"><b>按键</b><span>OK 键 + 四向摇杆</span></div>
+      <div class="card"><b>按键</b><span>OK 键 + 四向摇杆（ADC）</span></div>
       <div class="card"><b>声音</b><span>蜂鸣器 · 5 档音量（1 档静音）</span></div>
       <div class="card"><b>记忆</b><span>最高分 / 亮度 / 音量断电保存</span></div>
       <div class="card"><b>固件</b><span>tiny_dino.bin · Q-3</span></div>
     </div>
-    <p class="mute" style="margin-top:12px">玩法精髓：前期单棵仙人掌为主，后期多连与飞鸟登场；700 分后进入特殊模式。</p>
+    <p class="mute" style="margin-top:13px">玩法精髓：前期单棵仙人掌为主，后期多连与飞鸟登场；700 分后进入特殊模式。</p>
   </section>
 
   <!-- ============ 按键操作 ============ -->
   <section id="keys">
-    <h2><span class="ico">🕹</span>按键操作</h2>
+    <h2><span class="sno">03</span><span class="ico">🕹</span>按键操作</h2>
+    <div class="keypad">
+      <div class="kpd">
+        <i class="k-u">▲</i><i class="k-l">◀</i><i class="k-r">▶</i><i class="k-d">▼</i><i class="k-ok">OK</i>
+      </div>
+      <div class="side-lbl"><b>真机键位</b>十字方向键 + OK 键<br>上＝跳 · 下＝蹲 · OK＝确认</div>
+    </div>
     <table>
       <tr><th>操作</th><th>效果</th><th>说明</th></tr>
       <tr><td><span class="kbd">上</span> / <span class="kbd">OK</span></td><td>跳跃</td><td>越过仙人掌</td></tr>
       <tr><td><span class="kbd">下</span></td><td>下蹲</td><td>躲高空飞鸟；松开恢复</td></tr>
       <tr><td><span class="kbd">OK</span></td><td>开始 / 重开</td><td>开始出发，结束后再来一局</td></tr>
-      <tr><td>长按 OK 5 秒</td><td>重新开始</td><td>游戏中回到开始界面</td></tr>
+      <tr><td>长按 OK 5 秒</td><td>重新开始</td><td>游戏中回到开始状态</td></tr>
       <tr><td><span class="kbd">左</span>→<span class="kbd">右</span>→<span class="kbd">左</span>→<span class="kbd">右</span></td><td>隐藏设置</td><td>开始 / 结束界面输入</td></tr>
     </table>
     <p class="mute">跳跃高度与落地节奏固定，多玩几次就能预判。下蹲时碰撞范围变小。</p>
@@ -265,32 +415,46 @@
 
   <!-- ============ 游戏玩法 ============ -->
   <section id="play">
-    <h2><span class="ico">🦖</span>游戏玩法</h2>
+    <h2><span class="sno">04</span><span class="ico">🦖</span>游戏玩法</h2>
     <h3>计分</h3>
-    <p>分数实时累计，速度约为原版两倍。每 100 分速度提升一档并响提示音；<b>打破历史最高分</b> 时立即响起上扬音阶庆祝，最高分断电保存。</p>
+    <p>分数实时累计（约 9 分/秒，为原版两倍）。每 75 分速度提升一档并响提示音；<b>打破历史最高分</b> 时立即响起上扬音阶庆祝，最高分断电保存。</p>
     <h3>仙人掌</h3>
-    <p>三种：<span class="pill">单棵</span><span class="pill">二连</span><span class="pill">三连</span>。前期八成是单棵，得分越高多连越多；三连出现在后期，需要提前起跳。</p>
+    <p>三种：<span class="pill">单棵</span><span class="pill">二连</span><span class="pill">三连</span>。300 分前八成是单棵；300-700 分二连增多、出现少量三连；700 分后三连比例升到 30%。</p>
+    <div class="pxfigs">
+      <div class="pxfig"><canvas id="px-jump" width="96" height="48"></canvas><b>跳跃</b><span>上 / OK 越过仙人掌</span></div>
+      <div class="pxfig"><canvas id="px-duck" width="96" height="48"></canvas><b>下蹲</b><span>下键躲高空飞鸟</span></div>
+      <div class="pxfig"><canvas id="px-cactus" width="96" height="48"></canvas><b>仙人掌</b><span>单棵 · 二连 · 三连</span></div>
+      <div class="pxfig"><canvas id="px-bird" width="96" height="48"></canvas><b>飞鸟</b><span>高鸟蹲 · 低鸟跳</span></div>
+    </div>
     <h3>速度</h3>
     <table>
-      <tr><th>初始</th><th>每 100 分</th><th>上限</th></tr>
-      <tr><td>4.5 px/帧</td><td>+0.125 px/帧</td><td>8.0 px/帧</td></tr>
+      <tr><th>初始</th><th>每 75 分</th><th>上限</th></tr>
+      <tr><td>4.5 px/帧（33ms/帧）</td><td>+0.125 px/帧</td><td>8.0 px/帧</td></tr>
     </table>
     <p class="mute">节奏口诀：单棵轻松跳，二连稳节奏，三连早预判。</p>
   </section>
 
   <!-- ============ 特殊模式 ============ -->
   <section id="special">
-    <h2><span class="ico">⭐</span>特殊模式</h2>
+    <h2><span class="sno">05</span><span class="ico">⭐</span>特殊模式</h2>
     <p>得分达 <b>700</b> 后进入三阶段循环，状态栏字母 <b>T</b>（特殊）给出提示：</p>
     <table>
       <tr><th>阶段</th><th>时长</th><th>状态栏</th></tr>
-      <tr><td>正常期</td><td>约 180 ~ 200 分</td><td>无标志</td></tr>
-      <tr><td>过渡期</td><td>约 20 分</td><td>T 闪烁</td></tr>
-      <tr><td>特殊期</td><td>约 100 ~ 120 分</td><td>T 常亮</td></tr>
+      <tr><td>正常期</td><td>180 ~ 200 分</td><td>无标志</td></tr>
+      <tr><td>过渡期</td><td>20 分</td><td>T 闪烁</td></tr>
+      <tr><td>特殊期</td><td>100 ~ 120 分</td><td>T 常亮</td></tr>
     </table>
-    <p>特殊期变化：三连仙人掌刷新率降低（30%→20%）、速度略微放慢、仙人掌间距拉开（不会两个同框）。</p>
+    <p>特殊期变化：三连仙人掌概率 30%→20%、速度放慢 1px、仙人掌间距拉开（不会两个同框）。</p>
+    <div class="timeline">
+      <div class="tl-track">
+        <div class="tl-seg tl-a" style="flex:45"><b>正常期</b><small>180 ~ 200 分 · 无标志</small></div>
+        <div class="tl-seg tl-b" style="flex:10"><b>过渡</b><small>20 分 · T 闪烁</small></div>
+        <div class="tl-seg tl-c" style="flex:30"><b>特殊期</b><small>100 ~ 120 分 · T 常亮</small></div>
+      </div>
+      <div class="tl-loop">得分 ≥ 700 后循环往复 → <b>回到正常期再计一轮</b></div>
+    </div>
     <h3>飞鸟</h3>
-    <p>特殊期内约 35% 概率出现飞鸟，高低各半：</p>
+    <p>特殊期内 35% 概率生成飞鸟，高低各半：</p>
     <table>
       <tr><th>类型</th><th>高度</th><th>应对</th></tr>
       <tr><td>低飞鸟</td><td>贴地飞行</td><td>像仙人掌一样，跳过即可</td></tr>
@@ -301,23 +465,42 @@
 
   <!-- ============ 设置界面 ============ -->
   <section id="settings">
-    <h2><span class="ico">⚙</span>设置界面</h2>
-    <p>在开始或结束界面依次按 <span class="kbd">左</span><span class="kbd">右</span><span class="kbd">左</span><span class="kbd">右</span> 进入隐藏设置。三列：亮度、音量、保存与退出。左右选列（选中项下方有选中线），上下调档。</p>
+    <h2><span class="sno">06</span><span class="ico">⚙</span>设置界面</h2>
+    <p>在开始或结束界面依次按 <span class="kbd">左</span><span class="kbd">右</span><span class="kbd">左</span><span class="kbd">右</span> 进入隐藏设置。三列：亮度、音量、保存退出。左右选列（选中项下方有选中线），上下调档。</p>
+    <div class="bars">
+      <div class="bar-item"><b>亮度</b><div class="bar-cells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><span class="mute">默认 3 档</span></div>
+      <div class="bar-item"><b>音量</b><div class="bar-cells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><span class="mute">默认 3 档</span></div>
+    </div>
     <table>
       <tr><th>设置项</th><th>档位</th><th>说明</th></tr>
       <tr><td>亮度</td><td>1 ~ 5，默认 3</td><td>数字越大屏幕越亮</td></tr>
       <tr><td>音量</td><td>1 ~ 5，默认 3</td><td>数字越大声音越大；1 档静音</td></tr>
     </table>
     <h3>保存与退出</h3>
-    <p>选中第三列按 OK，弹出三个选项（左右选择、OK 确认）：<b>保存并退出</b> / <b>直接退出</b>（不保存）/ <b>返回设置</b>。</p>
+    <p>选中第三列按 OK，弹出对话框：<b>保存并退出</b> / <b>直接退出</b>（不保存）/ <b>返回设置</b>，上下选择、OK 确认。</p>
     <h3>还原系统</h3>
-    <p>设置界面长按 OK 5 秒进入还原界面，选择“确认”后清除所有记录与设置并重启；“返回”则退回设置界面。</p>
-    <p class="mute">版本号：设置界面底部显示（当前 Q-3）。</p>
+    <p>设置界面长按 OK 5 秒进入还原界面，选择“确认”后清除所有记录与设置并重启；“返回”则退回设置界面。版本号 Q-3 显示在设置界面底部。</p>
+  </section>
+
+  <!-- ============ PCB 图查看 ============ -->
+  <section id="pcb">
+    <h2><span class="sno">07</span><span class="ico">🧩</span>PCB 图查看</h2>
+    <p>本机 PCB 的<b>顶面 / 底面</b>渲染图（25×40mm · 双面铜 · 主控 CH32V003），点击图片可查看大图。仅展示，不可下载。</p>
+    <div class="pcb-wrap">
+      <figure class="pcb-card">
+        <a href="pcb_top2d.png" target="_blank" rel="noopener"><img src="pcb_top2d.png" alt="PCB 顶面"></a>
+        <figcaption>PCB 顶面（Top Layer）</figcaption>
+      </figure>
+      <figure class="pcb-card">
+        <a href="pcb_bottom2d.png" target="_blank" rel="noopener"><img src="pcb_bottom2d.png" alt="PCB 底面"></a>
+        <figcaption>PCB 底面（Bottom Layer）</figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- ============ 原理图 ============ -->
   <section id="schematic">
-    <h2><span class="ico">🔌</span>硬件原理图</h2>
+    <h2><span class="sno">08</span><span class="ico">🔌</span>硬件原理图</h2>
     <p>GameConsole v1.1 官方原理图（点击图片可查看大图，仅供查看）。</p>
     <div class="schematic">
       <div class="frame">
@@ -327,12 +510,12 @@
       </div>
       <a class="zoom" href="schematic_v11_p1.png" target="_blank">🔍 在新窗口查看大图</a>
     </div>
-    <p class="mute" style="margin-top:12px">主控 CH32V003J4M6 · SSD1306 OLED（I2C）· 摇杆 ADC 输入 · 蜂鸣器输出。</p>
+    <p class="mute" style="margin-top:13px">主控 CH32V003J4M6 · SSD1306 OLED（I2C）· 摇杆 ADC 输入 · 蜂鸣器输出。</p>
   </section>
 
   <!-- ============ FAQ ============ -->
   <section id="faq">
-    <h2><span class="ico">❓</span>常见问题</h2>
+    <h2><span class="sno">09</span><span class="ico">❓</span>常见问题</h2>
     <details><summary>没有声音？</summary><p>音量被设为 1 档（静音），进设置界面把音量调大即可。</p></details>
     <details><summary>屏幕太暗 / 太亮？</summary><p>设置界面选“亮度”，用上下键调节 1~5 档。</p></details>
     <details><summary>最高分会丢吗？</summary><p>不会，写入 Flash，断电后依然保留。</p></details>
@@ -344,346 +527,799 @@
   <footer>
     <div class="line"></div>
     <div>小恐龙用户手册 · <span class="ver">版本 Q-3</span> · 2026</div>
-    <div style="margin-top:4px">开源迷你游戏机 · CH32V003 · SSD1306 OLED 128×64</div>
+    <div style="margin-top:4px">开源迷你游戏机 · CH32V003 · 0.96 英寸 SSD1306 OLED 128×64</div>
+    <div class="copy">开源项目 · MIT License · 硬件参考 CH32V003-GameConsole · Q-3</div>
   </footer>
 
 </div>
 
 <script>
 "use strict";
-/* ================= 精灵数据（取自 spritebank.h Q-3） ================= */
-const SPR = {
-  RUN1:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00],
-  RUN2:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x37,0x29,0x00,0x00,0x00,0x00],
-  JUMP:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x15,0x07,0x00,0x00,0x00,0x00],
-  DUCK1:[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
-  DUCK2:[16,1,0x1E,0x3F,0xAC,0x78,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
-  C1:[6,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00],
-  C2:[13,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00],
-  C3:[20,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00],
-  CLOUD2:[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x24,0x24,0x24,0x24,0x26,0x23,0x23,0x26,0x3C,0x18],
-  CLOUD3:[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x3C,0x3F,0x3F,0x3F,0x3E,0x24,0x23,0x23,0x3E,0x18],
-  GO_STAND:[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xF3,0xFB,0x7E,0x0C,0x00,0x00,0x00,0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00],
-  GO_DUCK:[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0x78,0xF8,0x3C,0x3F,0x3B,0x1F,0x0E,0x00,0x00],
-  REFRESH:[18,2,0xFC,0x06,0x03,0x01,0x01,0x41,0x61,0x71,0xF9,0xF9,0x71,0x61,0x41,0x01,0x01,0x03,0x06,0xFC,0x03,0x07,0x0B,0x13,0x33,0x33,0x13,0x13,0x3F,0x3F,0x13,0x13,0x33,0x33,0x13,0x0B,0x07,0x03]
-};
-/* 5x7 数字字体（列优先） */
-const FONT = [
+/* ======================================================================
+   真机模拟环境 —— 逐行照搬 CH32V003 单片机 main.c / driver.h / 精灵库
+   ====================================================================== */
+
+/* ---------- 常量（main.c） ---------- */
+const SCREEN_W=128, SCREEN_H=64, GROUND_Y=48, DINO_X=8;
+const DINO_W=10, DINO_STAND_H=14, DINO_DUCK_H=7, DINO_DUCK_W=14;
+const FRAME_MS=33, JUMP_FRAMES=18, MAX_CACTI=3, MAX_CLOUDS=3;
+const SPEED_INIT=1024, SPEED_STEP=32, SPEED_MAX=2048;
+const LONG_PRESS_FRAMES=150;
+const JUMP_TABLE=[0,3,6,9,12,14,16,17,18,18,17,16,14,12,9,6,3,0];
+const CT_SINGLE=0, CT_DOUBLE=1, CT_TRIPLE=2, CT_BIRD_LOW=3, CT_BIRD_HIGH=4;
+const CACTUS_W=[6,13,20,10,10];
+const CACTUS_H=[12,12,12,12,8];
+const CACTUS_SPRITE_H=[16,16,16,8,8];
+const STATE_READY=0, STATE_PLAYING=1, STATE_GAMEOVER=2,
+      STATE_SETTINGS=3, STATE_SETTINGS_DIALOG=4, STATE_RESTORE=5;
+const POW10=[1,10,100,1000,10000];
+
+/* ---------- 精灵数据（spritebank.h Q-3，原样字节） ---------- */
+const DINO_RUN1=[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00, 0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00];
+const DINO_RUN2=[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00, 0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x37,0x29,0x00,0x00,0x00,0x00];
+const DINO_JUMP=[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xFF,0xFB,0x7E,0x0C,0x00,0x00,0x00, 0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x15,0x07,0x00,0x00,0x00,0x00];
+const DINO_DUCK1=[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00];
+const DINO_DUCK2=[16,1,0x1E,0x3F,0xAC,0x78,0x38,0x38,0x78,0xFC,0x3E,0x3F,0x3F,0x3B,0x1F,0x0E,0x00,0x00];
+const CACTUS_SINGLE=[6,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8, 0x00,0x00,0xFF,0xFF,0x00,0x00];
+const CACTUS_DOUBLE=[13,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8, 0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00];
+const CACTUS_TRIPLE=[20,2,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8,0x00,0xF8,0x80,0xFF,0xFF,0x80,0xF8, 0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0x00,0x00];
+const CLOUD_2=[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x24,0x24,0x24,0x24,0x26,0x23,0x23,0x26,0x3C,0x18];
+const CLOUD_3=[16,1,0x18,0x3C,0x26,0x23,0x23,0x26,0x3C,0x3F,0x3F,0x3F,0x3E,0x24,0x23,0x23,0x3E,0x18];
+const BIRD_F1=[12,1,0x0C,0x1E,0x1E,0x3F,0x3F,0x1C,0x1E,0x3F,0x3F,0x0E,0x04,0x00];
+const BIRD_F2=[12,1,0x0C,0x1C,0x1E,0x3E,0x3E,0x1C,0x1C,0x3E,0x3E,0x1E,0x1C,0x00];
+const GO_DINO_STAND=[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xF3,0xFB,0x7E,0x0C,0x00,0x00,0x00, 0x03,0x07,0x0F,0x3F,0x3F,0x0F,0x0F,0x07,0x00,0x00,0x00,0x00];
+const GO_DINO_JUMP=[12,2,0xE0,0xC0,0x80,0x00,0xFF,0xF3,0xFB,0x7E,0x0C,0x00,0x00,0x00, 0x03,0x07,0x0F,0x1F,0x3F,0x0F,0x15,0x07,0x00,0x00,0x00,0x00];
+const GO_DINO_DUCK=[16,1,0x1E,0x3F,0x7C,0xF8,0x38,0x38,0x78,0x78,0xF8,0x3C,0x3F,0x3B,0x1F,0x0E,0x00,0x00];
+const REFRESH_ICON=[18,2,0xFC,0x06,0x03,0x01,0x01,0x41,0x61,0x71,0xF9,0xF9,0x71,0x61,0x41,0x01,0x01,0x03,0x06,0xFC, 0x03,0x07,0x0B,0x13,0x33,0x33,0x13,0x13,0x3F,0x3F,0x13,0x13,0x33,0x33,0x13,0x0B,0x07,0x03];
+const CACTUS_SPRITE=[CACTUS_SINGLE,CACTUS_DOUBLE,CACTUS_TRIPLE];
+/* 5x7 字体 FONT5x7[38][5]（索引 0-9 数字，10-35 A-Z，36 空格，37 -） */
+const FONT5x7=[
  [0x3E,0x51,0x49,0x45,0x3E],[0x00,0x42,0x7F,0x40,0x00],[0x42,0x61,0x51,0x49,0x46],
  [0x21,0x41,0x45,0x4B,0x31],[0x18,0x14,0x12,0x7F,0x10],[0x27,0x45,0x45,0x45,0x39],
  [0x3C,0x4A,0x49,0x49,0x30],[0x01,0x71,0x09,0x05,0x03],[0x36,0x49,0x49,0x49,0x36],
- [0x06,0x49,0x49,0x29,0x1E]
+ [0x06,0x49,0x49,0x29,0x1E],[0x7E,0x11,0x11,0x11,0x7E],[0x7F,0x41,0x41,0x41,0x3E],
+ [0x3E,0x41,0x41,0x41,0x22],[0x7F,0x41,0x41,0x41,0x3E],[0x7F,0x49,0x49,0x49,0x41],
+ [0x7F,0x09,0x09,0x09,0x01],[0x3E,0x41,0x49,0x49,0x7A],[0x7F,0x08,0x08,0x08,0x7F],
+ [0x00,0x41,0x7F,0x41,0x00],[0x22,0x41,0x41,0x41,0x3F],[0x7F,0x08,0x14,0x22,0x41],
+ [0x7F,0x40,0x40,0x40,0x40],[0x7F,0x02,0x0C,0x02,0x7F],[0x7F,0x04,0x08,0x10,0x7F],
+ [0x3E,0x41,0x41,0x41,0x3E],[0x7F,0x09,0x09,0x09,0x06],[0x3E,0x41,0x41,0x45,0x3B],
+ [0x7F,0x09,0x19,0x29,0x46],[0x46,0x49,0x49,0x49,0x31],[0x01,0x01,0x7F,0x01,0x01],
+ [0x3F,0x40,0x40,0x40,0x3F],[0x1F,0x20,0x40,0x20,0x1F],[0x3F,0x40,0x38,0x40,0x3F],
+ [0x63,0x14,0x08,0x14,0x63],[0x07,0x08,0x70,0x08,0x07],[0x61,0x51,0x49,0x45,0x43],
+ [0x00,0x00,0x00,0x00,0x00],[0x08,0x08,0x08,0x08,0x08]
 ];
-const LETTERS = {
-  G:[0x3E,0x41,0x49,0x49,0x7A],A:[0x7E,0x11,0x11,0x11,0x7E],M:[0x7F,0x02,0x0C,0x02,0x7F],
-  E:[0x7F,0x49,0x49,0x49,0x41],O:[0x3E,0x41,0x41,0x41,0x3E],V:[0x1F,0x20,0x40,0x20,0x1F],
-  R:[0x7F,0x09,0x19,0x29,0x46],SP:[0x00,0x00,0x00,0x00,0x00]
-};
+/* 中文字形（chinese_font.h）：16x16 ZH_FONT，索引 ZH_SHE=0..ZH_ZE=22 */
+const ZH_FONT=[
+ [0x00,0x00,0x20,0x00,0x26,0x00,0xEC,0x1F,0x00,0x0C,0xC0,0x20,0xB8,0x21,0x8E,0x27,0x82,0x1C,0x82,0x18,0xBE,0x16,0xE0,0x23,0xE0,0x20,0x60,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x20,0x2E,0x20,0xAA,0x3F,0xAA,0x36,0xAE,0x36,0xAA,0x36,0xFA,0x36,0xAA,0x36,0xAE,0x36,0xAA,0x36,0xAA,0x3F,0x2E,0x20,0x00,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x04,0x03,0x04,0x61,0x74,0x21,0x74,0x31,0x54,0x1D,0x54,0x05,0x56,0x05,0x54,0x05,0x54,0x3D,0x74,0x21,0x74,0x21,0x04,0x21,0x04,0x33,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x30,0xFC,0x0F,0x04,0x40,0x24,0x22,0x24,0x22,0xF4,0x26,0xA6,0x2A,0xA6,0x12,0xA4,0x2A,0xF4,0x26,0x24,0x22,0x24,0x20,0x00,0x60,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x40,0x00,0x44,0x00,0x44,0x3F,0x54,0x25,0x74,0x25,0x44,0x25,0x46,0x25,0x44,0x25,0x74,0x25,0x54,0x25,0x44,0x3F,0x44,0x00,0x40,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x40,0x20,0x40,0x28,0xDE,0x37,0xDA,0x36,0xDA,0x36,0xDA,0x36,0xDA,0x3F,0xDA,0x36,0xDA,0x36,0xDA,0x36,0xDE,0x37,0x40,0x28,0x40,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0xC0,0x00,0x30,0x00,0xFC,0x3F,0x02,0x10,0x00,0x11,0x3E,0x0D,0x22,0x07,0x22,0x01,0xE2,0x3F,0x22,0x03,0x22,0x0D,0x3E,0x19,0x00,0x11,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x03,0x08,0x01,0xC8,0x3F,0x68,0x00,0x18,0x02,0x4E,0x02,0x4A,0x02,0x48,0x62,0x48,0x3F,0xC8,0x02,0xC8,0x02,0x48,0x02,0x08,0x02,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x40,0x20,0xC6,0x1F,0xCC,0x1F,0x00,0x10,0x00,0x28,0xFE,0x2F,0x4A,0x2C,0xCA,0x25,0x4A,0x23,0x4A,0x22,0x4A,0x27,0xFE,0x2D,0x00,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x00,0x7C,0x1F,0x40,0x10,0x40,0x10,0x40,0x10,0x40,0x10,0xFE,0x1F,0x40,0x10,0x40,0x10,0x40,0x10,0x7C,0x10,0x7C,0x7F,0x00,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x21,0x10,0x21,0x10,0x31,0x16,0x1D,0xFC,0x03,0x10,0x01,0x10,0x01,0x10,0x01,0xFC,0x3F,0x16,0x01,0x10,0x01,0x10,0x01,0x00,0x01,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x04,0x20,0x04,0x20,0xE4,0x3F,0xA4,0x2A,0xA4,0x2A,0xA4,0x2A,0xBE,0x2A,0xA4,0x2A,0xA4,0x2A,0xA4,0x2A,0xE4,0x3F,0x04,0x20,0x04,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x10,0x23,0x10,0x21,0xFE,0x3F,0x90,0x00,0x00,0x23,0x44,0x22,0x54,0x26,0xE4,0x2B,0x46,0x1A,0x44,0x1A,0x74,0x16,0x44,0x22,0x44,0x22,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x40,0x20,0x46,0x30,0xCC,0x1F,0x00,0x18,0x00,0x2C,0xFC,0x23,0x24,0x28,0xA4,0x28,0xA4,0x2D,0x24,0x27,0xE6,0x27,0x62,0x2C,0x00,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x00,0xFC,0x3F,0x04,0x10,0x04,0x10,0xE4,0x13,0x24,0x12,0x24,0x12,0x24,0x12,0xE4,0x13,0x04,0x10,0x04,0x10,0xFC,0x3F,0x00,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x18,0x08,0x0C,0x08,0x26,0x88,0x23,0xF8,0x21,0x9E,0x21,0x88,0x21,0x88,0x3F,0x88,0x21,0x88,0x21,0x88,0x21,0x88,0x21,0x08,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x10,0x0C,0x10,0x04,0x10,0x03,0x90,0x7F,0xF0,0x31,0x3E,0x31,0x16,0x31,0x10,0x31,0x10,0x31,0x10,0x31,0x10,0x7F,0x10,0x00,0x10,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x10,0x00,0x10,0x00,0xF6,0x07,0x00,0x12,0x00,0x18,0xFE,0x07,0x02,0x00,0x4A,0x07,0x7E,0x05,0x4E,0x05,0x4A,0x37,0x02,0x10,0xFE,0x1F,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x48,0x00,0x48,0x00,0x48,0x00,0x48,0x00,0x7E,0x00,0xC8,0x3F,0x48,0x00,0x48,0x00,0x7E,0x08,0x48,0x08,0x48,0x08,0xC8,0x0F,0x08,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x00,0x20,0x00,0x20,0x00,0x20,0x00,0x20,0x00,0x20,0xFE,0x3F,0xFE,0x3F,0x60,0x20,0x60,0x20,0x60,0x20,0x60,0x20,0x60,0x20,0x00,0x20,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x04,0x00,0x04,0x00,0x04,0x00,0x04,0x00,0x04,0x00,0xFC,0x3F,0xFC,0x3F,0x04,0x00,0xC4,0x00,0x84,0x01,0x04,0x03,0x04,0x02,0x04,0x00,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x40,0x20,0x44,0x10,0xC8,0x1F,0x00,0x10,0x50,0x18,0x4E,0x2C,0x48,0x27,0xC8,0x21,0x7E,0x20,0xC8,0x2F,0x48,0x28,0x48,0x28,0x40,0x24,0x00,0x00,0x00,0x00],
+ [0x00,0x00,0x10,0x21,0x90,0x21,0xFE,0x3F,0x90,0x00,0x10,0x08,0x42,0x09,0x46,0x09,0x3A,0x09,0xB2,0x7F,0x32,0x09,0x4E,0x09,0x46,0x09,0x40,0x08,0x00,0x00,0x00,0x00]
+];
+/* 10x10 小字 ZH_SMALL[19][20]：0保 1存 2并 3退 4出 5直 6接 7返 8回 9设 10置 11是 12否 13还 14原 15确 16认 17系 18统 */
+const ZH_SMALL=[
+ [0x0C,0x00,0xFF,0x01,0x90,0x00,0x57,0x00,0x39,0x00,0xF9,0x01,0x57,0x00,0x90,0x00,0x80,0x00,0x00,0x00],
+ [0x00,0x00,0x32,0x00,0xFA,0x01,0x06,0x00,0x2B,0x00,0x2A,0x01,0xEA,0x01,0x3A,0x00,0x2A,0x00,0x00,0x00],
+ [0x00,0x00,0x24,0x01,0xA5,0x00,0x7F,0x00,0x24,0x00,0x24,0x00,0xFF,0x01,0x24,0x00,0x24,0x00,0x00,0x00],
+ [0x00,0x00,0xF9,0x00,0x82,0x00,0x00,0x01,0x7F,0x01,0x5D,0x01,0x2D,0x01,0x6F,0x01,0x58,0x01,0x00,0x00],
+ [0x00,0x00,0xE6,0x00,0x08,0x01,0x08,0x01,0xFF,0x00,0x08,0x01,0x08,0x01,0x0E,0x01,0xE0,0x01,0x00,0x00],
+ [0x02,0x01,0xFE,0x01,0x76,0x01,0x76,0x01,0x76,0x01,0x76,0x01,0xFE,0x01,0x02,0x01,0x00,0x01,0x00,0x00],
+ [0x04,0x00,0x24,0x01,0xFF,0x00,0x04,0x00,0x2A,0x01,0x6E,0x01,0xB9,0x00,0xEE,0x00,0x2A,0x01,0x20,0x00],
+ [0x00,0x00,0x09,0x01,0xFA,0x00,0x40,0x01,0x3E,0x01,0x96,0x01,0x55,0x01,0x3D,0x01,0x45,0x01,0x00,0x00],
+ [0x00,0x00,0xFF,0x01,0x81,0x00,0xB9,0x00,0xA9,0x00,0xA9,0x00,0xB9,0x00,0x81,0x00,0xFF,0x01,0x00,0x00],
+ [0x08,0x00,0x09,0x00,0xFA,0x00,0x48,0x01,0x37,0x01,0xD1,0x00,0xD1,0x00,0x3F,0x01,0x08,0x01,0x00,0x00],
+ [0x00,0x00,0x03,0x01,0xFD,0x01,0xFB,0x01,0xED,0x01,0xF7,0x01,0xFD,0x01,0xFD,0x01,0x03,0x01,0x00,0x00],
+ [0x00,0x00,0x10,0x01,0xFF,0x00,0x9D,0x00,0xBD,0x00,0x5D,0x01,0x5D,0x01,0x5F,0x01,0x10,0x01,0x00,0x00],
+ [0x00,0x00,0x08,0x00,0xEA,0x01,0xA6,0x00,0xBE,0x00,0xA2,0x00,0xA6,0x00,0xEA,0x01,0x08,0x00,0x00,0x00],
+ [0x00,0x00,0xF9,0x00,0x82,0x00,0x10,0x01,0x1A,0x01,0x7E,0x01,0x02,0x01,0x0A,0x01,0x12,0x01,0x00,0x00],
+ [0x00,0x01,0xFE,0x00,0x01,0x00,0xBD,0x00,0x35,0x00,0xF7,0x01,0x35,0x00,0x7D,0x00,0xA1,0x00,0x00,0x00],
+ [0x00,0x00,0xFA,0x00,0x4E,0x00,0xFA,0x00,0xEC,0x01,0x5B,0x00,0xFE,0x00,0x5A,0x00,0xF8,0x01,0x00,0x00],
+ [0x00,0x00,0x08,0x00,0xF9,0x00,0x42,0x01,0x80,0x00,0x60,0x00,0x3F,0x00,0xC0,0x00,0x80,0x01,0x00,0x00],
+ [0x00,0x00,0x80,0x00,0x6A,0x00,0x16,0x00,0x2B,0x01,0xE9,0x00,0x25,0x00,0x51,0x00,0xA1,0x00,0x00,0x00],
+ [0xBE,0x00,0xA9,0x00,0xA4,0x00,0x12,0x01,0xFE,0x00,0x13,0x00,0xFA,0x01,0x12,0x01,0x80,0x00,0x00,0x00]
+];
 
-/* ================= 基础 ================= */
-const cv = document.getElementById('oled');
-const ctx = cv.getContext('2d');
-const W = 128, H = 64, GROUND = 52;
-const consoleEl = document.getElementById('console');
-const powerEl = document.getElementById('power');
-let power = false;
-let best = 0;
-try { best = parseInt(localStorage.getItem('dino_best')||'0',10)||0; } catch(e){}
+/* ---------- 全局变量（main.c 原样） ---------- */
+let state = STATE_READY;
+let page_buf = new Array(128).fill(0);
+let cacti = [];
+for(let i=0;i<MAX_CACTI;i++) cacti.push({type:0,x:0,active:0});
+let cloud_x=[0,0,0], cloud_y=[0,0,0], cloud_type=[0,0,0], cloud_tick=0;
+let score_tenths=0, high_score=0, speed_q8=SPEED_INIT;
+let dino_jumping=0, dino_jump_frame=0, dino_ducking=0, run_frame=0, run_anim_tick=0;
+let ok_hold_time=0;
+let prev_ok=0, prev_up=0, prev_down=0, prev_left=0, prev_right=0;
+let game_over_flash=0;
+let special_state=0, special_rem=0, cycle_tenths=0, cycle_target=1800;
+let go_snapshot=[]; for(let i=0;i<MAX_CACTI;i++) go_snapshot.push({type:0,x:0,active:0});
+let go_dino_pose=0, go_run_frame=0, go_jump_frame=0, record_played=0;
+let brightness=3, volume=3, temp_brightness=3, temp_volume=3;
+let settings_sel=0, dialog_sel=0, restore_sel=1, konami_step=0;
+let rnval=0xACE1;
 
-function drawSprite(d, x, y){
-  ctx.fillStyle = '#FFF';
-  const w = d[0], pages = d[1];
-  for(let c=0;c<w;c++){
-    for(let p=0;p<pages;p++){
-      const b = d[2 + p*w + c];
-      for(let r=0;r<8;r++){
-        if(b & (1<<r)) ctx.fillRect(x+c, y+r+p*8, 1, 1);
-      }
-    }
-  }
-  return {w:w, h:pages*8};
+/* ---------- 随机数（driver.h LFSR，16位原样） ---------- */
+function JOY_random(){
+  rnval = ((rnval >> 1) ^ ((-(rnval & 1)) & 0xB400)) & 0xFFFF;
+  return rnval;
 }
-function drawText(cols, x, y){
-  ctx.fillStyle = '#FFF';
-  for(let i=0;i<cols.length;i++){
-    const g = cols[i];
-    for(let c=0;c<5;c++){
-      for(let r=0;r<7;r++){
-        if(g[c] & (1<<r)) ctx.fillRect(x+i*6+c, y+r, 1, 1);
-      }
-    }
-  }
-}
-function textGlyphs(s){
-  const out=[];
-  for(const ch of s.toUpperCase()){
-    if(ch>='0'&&ch<='9') out.push(FONT[ch.charCodeAt(0)-48]);
-    else if(LETTERS[ch]) out.push(LETTERS[ch]);
-    else out.push(LETTERS.SP);
-  }
-  return out;
-}
-const glyphW = a => a.length*6;
 
-/* ================= 音效 ================= */
-let AC = null;
+/* ---------- 硬件输入模拟（driver.h 按键语义） ---------- */
+/* 方向键 ADC：松开=0；上197 下346 左511 右90；组合 上右259 下右388 下左616 上左567 */
+const PAD_N=197, PAD_NE=259, PAD_E=90, PAD_SE=388, PAD_S=346, PAD_SW=616, PAD_W=511, PAD_NW=567, PAD_DEV=25;
+const hw = { act:false, up:false, down:false, left:false, right:false };
+function padVal(){
+  const u=hw.up,d=hw.down,l=hw.left,r=hw.right;
+  if(u&&r) return PAD_NE; if(d&&r) return PAD_SE;
+  if(d&&l) return PAD_SW; if(u&&l) return PAD_NW;
+  if(u) return PAD_N; if(d) return PAD_S; if(l) return PAD_W; if(r) return PAD_E;
+  return 0;
+}
+function JOY_act_pressed(){ return hw.act ? 1 : 0; }
+function JOY_pad_pressed(){ return padVal()>10 ? 1 : 0; }
+function JOY_up_pressed(){
+  const v=padVal();
+  return ((v>PAD_N-PAD_DEV&&v<PAD_N+PAD_DEV)||(v>PAD_NE-PAD_DEV&&v<PAD_NE+PAD_DEV)||(v>PAD_NW-PAD_DEV&&v<PAD_NW+PAD_DEV))?1:0;
+}
+function JOY_down_pressed(){
+  const v=padVal();
+  return ((v>PAD_S-PAD_DEV&&v<PAD_S+PAD_DEV)||(v>PAD_SE-PAD_DEV&&v<PAD_SE+PAD_DEV)||(v>PAD_SW-PAD_DEV&&v<PAD_SW+PAD_DEV))?1:0;
+}
+function JOY_left_pressed(){
+  const v=padVal();
+  return ((v>PAD_W-PAD_DEV&&v<PAD_W+PAD_DEV)||(v>PAD_SW-PAD_DEV&&v<PAD_SW+PAD_DEV)||(v>PAD_NW-PAD_DEV&&v<PAD_NW+PAD_DEV))?1:0;
+}
+function JOY_right_pressed(){
+  const v=padVal();
+  return ((v>PAD_E-PAD_DEV&&v<PAD_E+PAD_DEV)||(v>PAD_NE-PAD_DEV&&v<PAD_NE+PAD_DEV)||(v>PAD_SE-PAD_DEV&&v<PAD_SE+PAD_DEV))?1:0;
+}
+
+/* ---------- 蜂鸣器模拟（driver.h JOY_sound，频率/时长/音量档位原样） ---------- */
+let AC=null;
 function ensureAudio(){
-  if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
-  if(AC && AC.state==='suspended') AC.resume();
+  if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(AC&&AC.state==='suspended') AC.resume();
 }
-function beep(freq, dur, delay){
-  if(!AC) return;
-  const t = AC.currentTime + (delay||0);
-  const o = AC.createOscillator(), g = AC.createGain();
-  o.type='square'; o.frequency.value=freq;
+const VOL_GAIN=[0,0,0.05,0.10,0.18,0.28];
+function JOY_sound(freq, dur){
+  if(volume<=1) return;
+  const halfUs=255-freq, periodUs=2*halfUs;
+  const hz=1e6/periodUs;
+  const ms=(dur*periodUs)/1000;
+  const t=AC.currentTime;
+  const o=AC.createOscillator(), g=AC.createGain();
+  o.type='square'; o.frequency.value=hz;
   g.gain.setValueAtTime(0.0001,t);
-  g.gain.exponentialRampToValueAtTime(0.18,t+0.012);
-  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  g.gain.exponentialRampToValueAtTime(VOL_GAIN[volume>5?5:volume],t+0.004);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(ms,0.01));
   o.connect(g); g.connect(AC.destination);
-  o.start(t); o.stop(t+dur+0.02);
+  o.start(t); o.stop(t+ms+0.03);
 }
-const S_JUMP = ()=>beep(380,0.06);
-const S_SCORE= ()=>beep(660,0.07);
-const S_DIE  = ()=>{beep(200,0.18);beep(140,0.25,0.1);};
-const S_RECORD=()=>{beep(150,0.09);beep(170,0.09,0.1);beep(190,0.09,0.2);beep(220,0.09,0.3);beep(130,0.2,0.42);};
+function SND_JUMP(){ JOY_sound(120,50); }
+function SND_SCORE(){ JOY_sound(180,60); }
+function SND_CRASH(){ JOY_sound(80,80); JOY_sound(40,100); JOY_sound(20,120); }
+function SND_RECORD(){ JOY_sound(150,50); JOY_sound(160,50); JOY_sound(170,50); JOY_sound(180,130); }
 
-/* ================= 游戏状态 ================= */
-const ST = {MENU:0, RUN:1, OVER:2};
-let st = ST.MENU;
-let dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
-let speed=4.5, score=0, tick=0, hiShown=false;
-let cacti=[], clouds=[], nextCactus=70, nextCloud=30;
-let flash=0, overT=0;
-
-const JUMP_TABLE=[0,3,6,9,12,14,16,17,18,18,17,16,14,12,9,6,3,0];
-
-function resetRun(){
-  st=ST.RUN; score=0; speed=4.5; tick=0; hiShown=false;
-  dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
-  cacti=[]; clouds=[]; nextCactus=70; nextCloud=30; flash=0; overT=0;
-  spawnCloud(true);
-}
-function startMenu(){
-  st=ST.MENU; dino={x:14,y:0,jumpT:-1,duck:false,frame:0,alive:true};
-  cacti=[]; clouds=[]; nextCactus=70; nextCloud=30;
-  spawnCloud(true);
-}
-function doJump(){
-  if(st===ST.MENU){ ensureAudio(); resetRun(); S_JUMP(); return; }
-  if(st===ST.RUN && dino.jumpT<0){ dino.jumpT=0; S_JUMP(); }
-  if(st===ST.OVER){ ensureAudio(); resetRun(); S_JUMP(); }
-}
-function setDuck(d){
-  if(st!==ST.RUN) return;
-  dino.duck=d;
-}
-function spawnCloud(first){
-  clouds.push({x: W + (first?20:Math.random()*40), y: 2+Math.floor(Math.random()*9),
-               t: Math.random()<0.7?2:3});
-  nextCloud = 40 + Math.floor(Math.random()*60);
-}
-function spawnCactus(){
-  const phase = score<300?0:(score<700?1:2);
-  let type=0;
-  if(phase===0){ type = Math.random()<0.8?0:1; }
-  else if(phase===1){ const r=Math.random(); type = r<0.55?0:(r<0.9?1:2); }
-  else { const r=Math.random(); type = r<0.45?0:(r<0.8?1:2); }
-  const sp = SPR[type===0?'C1':(type===1?'C2':'C3')];
-  cacti.push({x: W+4, type:type, w:sp[0], h:sp[1]*8});
-  const gap = 62 + Math.floor(Math.random()*46) + (speed-4.5)*9;
-  nextCactus = gap;
+/* ---------- 亮度（SSD1306 对比度模拟） ---------- */
+function JOY_set_brightness(level){
+  let contrast;
+  if(level<=1) contrast=40; else if(level===2) contrast=80;
+  else if(level===3) contrast=160; else if(level===4) contrast=200; else contrast=255;
+  oledCtx.globalAlpha = contrast/255;
 }
 
-/* ================= 碰撞 ================= */
-function collides(){
-  const dy = dino.jumpT>=0 ? JUMP_TABLE[dino.jumpT] : 0;
-  const dx1 = 4, dx2 = dino.duck?13:10;
-  const dTop = GROUND - (dino.duck?8:15) - dy;
-  const dBot = GROUND - dy;
-  for(const c of cacti){
-    const cx1 = c.x + 1, cx2 = c.x + c.w - 1;
-    const cTop = GROUND - c.h + 3, cBot = GROUND;
-    if(dx1 + dino.x < cx2 && dino.x + dx2 > cx1 && dTop < cBot && dBot > cTop) return true;
+/* ---------- 持久化（storage.h 语义 → localStorage） ---------- */
+const LS_KEY='dino_q3_save';
+function storage_save(b,v,h){ try{ localStorage.setItem(LS_KEY, JSON.stringify({b:b,v:v,h:h})); }catch(e){} }
+function storage_load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS_KEY)||'');
+    return {brightness:Math.min(5,Math.max(1,d.b||3)), volume:Math.min(5,Math.max(1,d.v||3)), high_score:(d.h||0)};
+  }catch(e){ return {brightness:3,volume:3,high_score:0}; }
+}
+
+/* ---------- canvas ---------- */
+const cv=document.getElementById('oled');
+const oledCtx=cv.getContext('2d');
+const consoleEl=document.getElementById('console');
+const powerEl=document.getElementById('power');
+let power=false;
+
+/* ---------- 精灵绘制（main.c blit_sprite 原样） ---------- */
+function blit_sprite(page, x, y, sprite){
+  const w=sprite[0], h_pages=sprite[1], data=sprite;
+  const y_page=y>>3, y_shift=y&7;
+  if(page<y_page||page>y_page+h_pages) return;
+  if(page===y_page+h_pages&&y_shift===0) return;
+  const local_page=page-y_page;
+  for(let i=0;i<w;i++){
+    let px=x+i;
+    if(px<0) continue;
+    if(px>=SCREEN_W) break;
+    const b_cur=(local_page<h_pages)?data[2+local_page*w+i]:0;
+    const b_prev=(local_page>0&&local_page-1<h_pages)?data[2+(local_page-1)*w+i]:0;
+    let result;
+    if(y_shift===0) result=b_cur;
+    else result=((b_cur<<y_shift)|(b_prev>>(8-y_shift)))&0xFF;
+    page_buf[px]|=result;
   }
-  return false;
 }
-
-/* ================= 绘制 ================= */
-function clear(){ ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); }
-function drawGround(){
-  ctx.fillStyle='#FFF';
-  for(let x=0;x<W;x+=4){ ctx.fillRect(x, GROUND, 1, 1); }
+function blit_char(x, idx){
+  if(idx>37) return;
+  const g=FONT5x7[idx];
+  for(let i=0;i<5&&x+i<SCREEN_W;i++) page_buf[x+i]|=g[i];
 }
-function drawDino(){
-  const dy = dino.jumpT>=0 ? JUMP_TABLE[dino.jumpT] : 0;
-  const y = GROUND - dy;
-  let spr;
-  if(st===ST.OVER){
-    spr = dino.duck ? SPR.GO_DUCK : SPR.GO_STAND;
-    drawSprite(spr, dino.x, y - spr[1]*8);
-    return;
+function char_to_font(c){
+  if(c>='0'&&c<='9') return c.charCodeAt(0)-48;
+  if(c>='A'&&c<='Z') return c.charCodeAt(0)-65+10;
+  if(c==='-') return 37;
+  return 36;
+}
+function blit_char_paged(x, idx, page, y_shift){
+  if(idx>37) return;
+  const g=FONT5x7[idx];
+  for(let i=0;i<5&&x+i<SCREEN_W;i++){
+    const b=g[i];
+    if(page===1) page_buf[x+i]|=((b<<y_shift)&0xFF);
+    else if(page===2) page_buf[x+i]|=(b>>(8-y_shift));
   }
-  if(dino.duck){ spr = (dino.frame&1)?SPR.DUCK1:SPR.DUCK2; }
-  else if(dino.jumpT>=0){ spr = SPR.JUMP; }
-  else { spr = (dino.frame&1)?SPR.RUN1:SPR.RUN2; }
-  drawSprite(spr, dino.x, y - spr[1]*8);
 }
-function drawScore(){
-  const s = String(Math.floor(score));
-  const g = textGlyphs(s);
-  const x = W - glyphW(g) - 6;
-  ctx.fillStyle = '#FFF';
-  drawText(g, x, 4);
+function draw_text_paged(x, s, page, y_shift){
+  for(const ch of s){ blit_char_paged(x, char_to_font(ch), page, y_shift); x+=6; }
 }
-function drawBestMenu(){
-  const s = 'HI ' + Math.max(best, Math.floor(score));
-  const g = textGlyphs(s);
-  ctx.fillStyle = '#FFF';
-  drawText(g, W - glyphW(g) - 6, 4);
+function draw_text(x, s){
+  for(const ch of s){ blit_char(x, char_to_font(ch)); x+=6; }
 }
-
-/* ================= 主循环 ================= */
-let lastT = 0;
-function frame(t){
-  requestAnimationFrame(frame);
-  if(!power){ clear(); return; }
-  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
-  flash++;
-  if(st===ST.MENU){
-    drawClouds(true);
-    drawGround();
-    drawBestMenu();
-    drawSprite(SPR.RUN1, dino.x, GROUND-16);
-    ctx.fillStyle = '#FFF';
-    const title = '小恐龙';
-    ctx.font='bold 14px "Microsoft YaHei",sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText(title, 64, 20);
-    ctx.font='10px "Microsoft YaHei",sans-serif';
-    if((flash>>4)&1) ctx.fillText('按 OK / 上 键开始', 64, 32);
-    return;
+function draw_score(score){
+  let x=SCREEN_W-5*6, started=0;
+  for(let d=4;d>=0;d--){
+    const digit=Math.floor(score/POW10[d])%10;
+    if(digit===0&&!started&&d>0){ x+=6; continue; }
+    started=1;
+    blit_char(x, digit);
+    x+=6;
   }
-  if(st===ST.OVER){
-    drawGround();
-    drawDino();
-    drawSprite(SPR.REFRESH, 100, GROUND-24);
-    const g = textGlyphs('GAME OVER');
-    ctx.fillStyle = '#FFF';
-    drawText(g, Math.floor((W-glyphW(g))/2), 12);
-    const sc = 'SCORE ' + Math.floor(score);
-    const scg = textGlyphs(sc);
-    drawText(scg, Math.floor((W-glyphW(scg))/2), 24);
-    if(hiShown){
-      const hg = textGlyphs('HI ' + Math.max(best, Math.floor(score)));
-      drawText(hg, Math.floor((W-glyphW(hg))/2), 33);
+}
+/* 中文字形（chinese_font.h blit_zh / blit_zh_small 原样） */
+function blit_zh(page, x, y, idx){
+  const data=ZH_FONT[idx];
+  for(let col=0;col<16;col++){
+    if(x+col>=128) break;
+    const bits=data[col*2]|((data[col*2+1])<<8);
+    for(let row=0;row<16;row++){
+      if(bits&(1<<row)){
+        const py=y+row;
+        if(py<64&&(py>>3)===page) page_buf[x+col]|=(1<<(py&7));
+      }
     }
-    ctx.fillStyle = '#FFF';
-    ctx.font='10px "Microsoft YaHei",sans-serif'; ctx.textAlign='center';
-    if((flash>>4)&1) ctx.fillText('按 OK 再来一局', 64, 56);
-    return;
   }
-  /* RUN */
-  speed = Math.min(8, 4.5 + Math.floor(score/100)*0.125);
-  dino.frame++;
-  /* 跳跃推进 */
-  if(dino.jumpT>=0){
-    dino.jumpT++;
-    if(dino.jumpT>=JUMP_TABLE.length) dino.jumpT=-1;
-  }
-  /* 云 */
-  for(let i=clouds.length-1;i>=0;i--){
-    clouds[i].x -= speed*0.5;
-    if(clouds[i].x < -18) clouds.splice(i,1);
-  }
-  if(--nextCloud<=0) spawnCloud();
-  /* 仙人掌 */
-  for(let i=cacti.length-1;i>=0;i--){
-    cacti[i].x -= speed;
-    if(cacti[i].x < -30) cacti.splice(i,1);
-  }
-  if(--nextCactus<=0) spawnCactus();
-  /* 计分 */
-  score += speed*0.04;
-  if(Math.floor(score/100) > Math.floor((score - speed*0.04)/100)) S_SCORE();
-  /* 碰撞 */
-  if(collides()){
-    st=ST.OVER; overT=0;
-    if(score>best){ best=Math.floor(score); hiShown=true;
-      try{localStorage.setItem('dino_best', String(best));}catch(e){}
-      S_RECORD(); } else { S_DIE(); }
-    return;
-  }
-  drawClouds(false);
-  drawGround();
-  for(const c of cacti){ drawSprite(SPR[c.type===0?'C1':(c.type===1?'C2':'C3')], c.x, GROUND-c.h); }
-  drawDino();
-  drawScore();
 }
-function drawClouds(any){
-  ctx.fillStyle = '#FFF';
-  for(const cl of clouds){
-    const sp = cl.t===2?SPR.CLOUD2:SPR.CLOUD3;
-    drawSprite(sp, cl.x, cl.y);
+function draw_zh(page, x, y, arr){
+  for(const idx of arr){ blit_zh(page,x,y,idx); x+=18; }
+}
+function blit_zh_small(page, x, y, idx){
+  const data=ZH_SMALL[idx];
+  for(let col=0;col<10;col++){
+    if(x+col>=128) break;
+    const bits=data[col*2]|((data[col*2+1])<<8);
+    for(let row=0;row<10;row++){
+      if(bits&(1<<row)){
+        const py=y+row;
+        if(py<64&&(py>>3)===page) page_buf[x+col]|=(1<<(py&7));
+      }
+    }
   }
 }
 
-/* ================= 输入 ================= */
-function pressKey(k){
-  ensureAudio();
-  if(k==='ok') doJump();
-  else if(k==='up'){ if(st===ST.MENU){ resetRun(); S_JUMP(); } else if(st===ST.OVER){ resetRun(); S_JUMP(); } else doJump(); }
-  else if(k==='down'){ setDuck(true); }
+/* ---------- 游戏逻辑（main.c 原样） ---------- */
+function reset_game(){
+  score_tenths=0; speed_q8=SPEED_INIT;
+  dino_jumping=0; dino_jump_frame=0; dino_ducking=0;
+  run_frame=0; run_anim_tick=0; ok_hold_time=0;
+  for(let i=0;i<MAX_CACTI;i++){ cacti[i].active=0; cacti[i].x=0; }
+  cacti[0].type=CT_SINGLE; cacti[0].x=SCREEN_W+40; cacti[0].active=1;
+  cloud_x[0]=20; cloud_y[0]=2; cloud_x[1]=70; cloud_y[1]=8; cloud_x[2]=110; cloud_y[2]=4;
+  for(let i=0;i<MAX_CLOUDS;i++) cloud_type[i]=((JOY_random()%100)<70)?0:1;
+  record_played=0; special_state=0; special_rem=0; cycle_tenths=0;
+  cycle_target=1800+(JOY_random()%200);
 }
-function releaseKey(k){
-  if(k==='down') setDuck(false);
+function spawn_cactus(){
+  for(let i=0;i<MAX_CACTI;i++){
+    if(!cacti[i].active){
+      const score=Math.floor(score_tenths/10);
+      let r=JOY_random()%100;
+      let type;
+      if(special_state===2&&r<35){
+        type=(JOY_random()&1)?CT_BIRD_HIGH:CT_BIRD_LOW;
+      }else if(score<300){
+        r=JOY_random()%100;
+        type=(r<80)?CT_SINGLE:CT_DOUBLE;
+      }else if(score<700){
+        r=JOY_random()%100;
+        if(r<50) type=CT_SINGLE; else if(r<90) type=CT_DOUBLE; else type=CT_TRIPLE;
+      }else{
+        r=JOY_random()%100;
+        if(special_state===2){
+          if(r<35) type=CT_SINGLE; else if(r<80) type=CT_DOUBLE; else type=CT_TRIPLE;
+        }else{
+          if(r<30) type=CT_SINGLE; else if(r<70) type=CT_DOUBLE; else type=CT_TRIPLE;
+        }
+      }
+      cacti[i].type=type;
+      cacti[i].x=SCREEN_W+30+(JOY_random()%70);
+      if(special_state===2) cacti[i].x+=30;
+      cacti[i].active=1;
+      return;
+    }
+  }
 }
-/* 摇杆 & OK 按钮 */
-document.querySelectorAll('.dpad button,.btn-ok').forEach(b=>{
-  const k = b.dataset.k;
-  const down = e=>{ e.preventDefault(); b.classList.add('pressed'); pressKey(k); };
-  const up = e=>{ b.classList.remove('pressed'); releaseKey(k); };
-  b.addEventListener('mousedown', down);
-  b.addEventListener('mouseup', up);
-  b.addEventListener('mouseleave', up);
-  b.addEventListener('touchstart', down, {passive:false});
-  b.addEventListener('touchend', up);
-  b.addEventListener('touchcancel', up);
-});
-/* 电源开关 */
+function check_collision(){
+  let dino_x=DINO_X+1, dino_w, dino_h, dino_y;
+  if(dino_jumping){ dino_w=DINO_W; dino_h=DINO_STAND_H; dino_y=GROUND_Y-DINO_STAND_H-JUMP_TABLE[dino_jump_frame]; }
+  else if(dino_ducking){ dino_w=DINO_DUCK_W; dino_h=DINO_DUCK_H; dino_y=GROUND_Y-DINO_DUCK_H; }
+  else { dino_w=DINO_W; dino_h=DINO_STAND_H; dino_y=GROUND_Y-DINO_STAND_H; }
+  for(let i=0;i<MAX_CACTI;i++){
+    if(!cacti[i].active) continue;
+    const cw=CACTUS_W[cacti[i].type], ch=CACTUS_H[cacti[i].type], cx=cacti[i].x;
+    let cy;
+    if(cacti[i].type===CT_BIRD_HIGH) cy=GROUND_Y-20; else cy=GROUND_Y-ch;
+    if(dino_x<cx+cw && dino_x+dino_w>cx && dino_y<cy+ch && dino_y+dino_h>cy) return 1;
+  }
+  return 0;
+}
+function update_game(){
+  score_tenths+=3;
+  if(score_tenths>0&&score_tenths%750===0){
+    if(speed_q8<SPEED_MAX) speed_q8+=SPEED_STEP;
+    SND_SCORE();
+  }
+  {
+    const score=Math.floor(score_tenths/10);
+    if(high_score>0&&score>high_score&&!record_played){ record_played=1; SND_RECORD(); }
+    if(score>=700){
+      if(special_state===0){
+        cycle_tenths+=3;
+        if(cycle_tenths>=cycle_target){ special_state=1; special_rem=200; cycle_tenths=0; }
+      }else if(special_rem>3){
+        special_rem-=3;
+      }else{
+        special_rem=0;
+        if(special_state===1){ special_state=2; special_rem=1000+(JOY_random()%200); }
+        else{ special_state=0; cycle_target=1800+(JOY_random()%200); }
+      }
+    }
+  }
+  run_anim_tick=(run_anim_tick+1)&0xFF;
+  if(run_anim_tick>=4){ run_anim_tick=0; run_frame=(run_frame+1)&0xFF; }
+  if(dino_jumping){
+    dino_jump_frame=(dino_jump_frame+1)&0xFF;
+    if(dino_jump_frame>=JUMP_FRAMES){ dino_jumping=0; dino_jump_frame=0; }
+  }
+  let move_px=speed_q8>>8;
+  if(special_state===2&&move_px>3) move_px--;
+  for(let i=0;i<MAX_CACTI;i++){
+    if(!cacti[i].active) continue;
+    cacti[i].x-=move_px;
+    if(cacti[i].x<-20) cacti[i].active=0;
+  }
+  let rightmost_x=-1000, active_count=0;
+  for(let i=0;i<MAX_CACTI;i++){
+    if(cacti[i].active){ active_count++; if(cacti[i].x>rightmost_x) rightmost_x=cacti[i].x; }
+  }
+  let min_gap=35+(speed_q8>>6);
+  if(special_state===2) min_gap+=45;
+  if(active_count<MAX_CACTI&&rightmost_x<(SCREEN_W-min_gap)) spawn_cactus();
+  cloud_tick=(cloud_tick+1)&0xFF;
+  if(cloud_tick>=2){
+    cloud_tick=0;
+    for(let i=0;i<MAX_CLOUDS;i++){
+      cloud_x[i]--;
+      if(cloud_x[i]<-18){
+        cloud_x[i]=SCREEN_W+(JOY_random()%40);
+        cloud_y[i]=JOY_random()%16;
+        cloud_type[i]=((JOY_random()%100)<70)?0:1;
+      }
+    }
+  }
+  if(check_collision()){
+    state=STATE_GAMEOVER;
+    for(let i=0;i<MAX_CACTI;i++){ go_snapshot[i].type=cacti[i].type; go_snapshot[i].x=cacti[i].x; go_snapshot[i].active=cacti[i].active; }
+    if(dino_jumping) go_dino_pose=1;
+    else if(dino_ducking) go_dino_pose=2;
+    else go_dino_pose=0;
+    go_run_frame=run_frame; go_jump_frame=dino_jump_frame;
+    const final_score=Math.floor(score_tenths/10);
+    if(final_score>high_score){ high_score=final_score; storage_save(brightness,volume,high_score); SND_RECORD(); }
+    else { SND_CRASH(); }
+    game_over_flash=0;
+  }
+}
+
+/* ---------- 渲染一帧（main.c render_frame 原样，页缓冲→canvas） ---------- */
+function render_frame(){
+  for(let page=0;page<7;page++){
+    for(let i=0;i<SCREEN_W;i++) page_buf[i]=0;
+    if(page===6&&state!==STATE_SETTINGS&&state!==STATE_SETTINGS_DIALOG&&state!==STATE_RESTORE){
+      for(let i=0;i<SCREEN_W;i++) page_buf[i]=0x01;
+      const p1=(score_tenths>>2)%128;
+      page_buf[p1]|=0x02;
+      if(p1+1<128) page_buf[p1+1]|=0x03;
+      const p2=((score_tenths>>2)+60)%128;
+      page_buf[p2]|=0x04;
+      if(p2+1<128) page_buf[p2+1]|=0x0A;
+      if(p2+2<128) page_buf[p2+2]|=0x04;
+    }
+    if(state===STATE_SETTINGS){
+      if(page===0||page===1) draw_zh(page,46,0,[0,1]);
+      if(page===2||page===3){
+        draw_zh(page,2,16,[2,3]);
+        draw_zh(page,44,16,[4,5]);
+        draw_zh(page,86,16,[6,7]);
+      }
+      if(page===4){
+        if(settings_sel===0){ draw_text(0,">"); draw_text(32,"<"); }
+        blit_char(16,temp_brightness);
+        if(settings_sel===1){ draw_text(42,">"); draw_text(74,"<"); }
+        blit_char(58,temp_volume);
+        if(settings_sel===2){ draw_text(84,">"); draw_text(116,"<"); }
+        draw_text(98,"OK");
+      }
+      if(page===5){
+        let ls,le;
+        if(settings_sel===0){ ls=2; le=36; }
+        else if(settings_sel===1){ ls=44; le=78; }
+        else { ls=86; le=120; }
+        for(let i=ls;i<=le;i++) page_buf[i]|=0x04;
+      }
+      if(page===6) draw_text(46,"Q-3");
+    }else if(state===STATE_SETTINGS_DIALOG){
+      if(page===0||page===1){
+        for(let i=0;i<5;i++) blit_zh_small(page,34+i*11,1,i);
+      }
+      if(page===2){
+        if(dialog_sel===0) page_buf[14]=0xFF;
+        for(let i=0;i<4;i++) blit_zh_small(page,30+i*11,16,i<2?i:(i===2?3:4));
+      }
+      if(page===3||page===4){
+        if(dialog_sel===1) page_buf[14]=0xFF;
+        for(let i=0;i<4;i++) blit_zh_small(page,30+i*11,30,i<2?5+i:3+(i-2));
+      }
+      if(page===5||page===6){
+        if(dialog_sel===2) page_buf[14]=0xFF;
+        for(let i=0;i<4;i++) blit_zh_small(page,30+i*11,44,7+i);
+      }
+    }else if(state===STATE_RESTORE){
+      if(page===2||page===3){
+        for(let i=0;i<6;i++) blit_zh_small(page,30+i*11,18,11+i);
+      }
+      if(page===5){
+        for(let i=0;i<2;i++) blit_zh_small(page,20+i*11,40,15+i);
+        for(let i=0;i<2;i++) blit_zh_small(page,84+i*11,40,7+i);
+      }
+      if(page===6){
+        if(restore_sel===0){ for(let i=18;i<46;i++) page_buf[i]|=0x10; }
+        else { for(let i=82;i<110;i++) page_buf[i]|=0x10; }
+      }
+    }
+    if(state===STATE_SETTINGS||state===STATE_SETTINGS_DIALOG||state===STATE_RESTORE){
+      paintPage(page);
+      continue;
+    }
+    if(page===0){
+      if(state===STATE_PLAYING||state===STATE_GAMEOVER){
+        if(special_state!==0){
+          if(!(special_state===1&&((Math.floor(score_tenths/40))&1))) blit_char(90,29);
+        }
+        draw_score(Math.floor(score_tenths/10));
+      }
+      if(high_score>0&&state!==STATE_PLAYING){
+        draw_text(0,"HI");
+        let x=12, hs=high_score, started=0;
+        for(let d=4;d>=0;d--){
+          const digit=Math.floor(hs/POW10[d])%10;
+          if(digit===0&&!started&&d>0){ x+=6; continue; }
+          started=1; blit_char(x,digit); x+=6;
+        }
+      }
+    }
+    if(state===STATE_PLAYING){
+      for(let i=0;i<MAX_CLOUDS;i++){
+        if(cloud_x[i]<SCREEN_W&&cloud_x[i]>-18){
+          blit_sprite(page,cloud_x[i],cloud_y[i],cloud_type[i]?CLOUD_3:CLOUD_2);
+        }
+      }
+    }
+    {
+      let dino_sprite, dino_y;
+      if(state===STATE_GAMEOVER){
+        if(go_dino_pose===2){ dino_sprite=GO_DINO_DUCK; dino_y=GROUND_Y-8; }
+        else if(go_dino_pose===1){ dino_sprite=GO_DINO_JUMP; dino_y=GROUND_Y-16-JUMP_TABLE[go_jump_frame]; }
+        else { dino_sprite=GO_DINO_STAND; dino_y=GROUND_Y-16; }
+      }else if(dino_jumping){
+        dino_sprite=DINO_JUMP; dino_y=GROUND_Y-16-JUMP_TABLE[dino_jump_frame];
+      }else if(dino_ducking){
+        dino_sprite=(run_frame&1)?DINO_DUCK2:DINO_DUCK1; dino_y=GROUND_Y-8;
+      }else{
+        dino_sprite=(run_frame&1)?DINO_RUN2:DINO_RUN1; dino_y=GROUND_Y-16;
+      }
+      blit_sprite(page,DINO_X,dino_y,dino_sprite);
+    }
+    {
+      const obs=(state===STATE_GAMEOVER)?go_snapshot:cacti;
+      for(let i=0;i<MAX_CACTI;i++){
+        if(!obs[i].active) continue;
+        if(obs[i].x>=SCREEN_W) continue;
+        const type=obs[i].type;
+        if(type<=CT_TRIPLE){
+          const cy=GROUND_Y-CACTUS_SPRITE_H[type];
+          blit_sprite(page,obs[i].x,cy,CACTUS_SPRITE[type]);
+        }else{
+          const cy=(type===CT_BIRD_HIGH)?(GROUND_Y-20):(GROUND_Y-8);
+          blit_sprite(page,obs[i].x,cy,(run_frame&1)?BIRD_F1:BIRD_F2);
+        }
+      }
+    }
+    if(state===STATE_READY){
+      if(page===1) draw_text(40,"DINO RUN");
+    }
+    if(state===STATE_GAMEOVER){
+      if(page===1||page===2) draw_text_paged(37,"GAME OVER",page,2);
+      if(page===3||page===4) blit_sprite(page,55,24,REFRESH_ICON);
+    }
+    paintPage(page);
+  }
+  if(state===STATE_GAMEOVER) game_over_flash=(game_over_flash+1)&0xFF;
+}
+function paintPage(page){
+  for(let x=0;x<SCREEN_W;x++){
+    for(let r=0;r<8;r++){
+      if(page_buf[x]&(1<<r)) oledCtx.fillRect(x,page*8+r,1,1);
+    }
+  }
+}
+
+/* ---------- 按键处理（main.c handle_input 原样） ---------- */
+function handle_input(){
+  const ok=JOY_act_pressed(), up=JOY_up_pressed(), down=JOY_down_pressed(),
+        left=JOY_left_pressed(), right=JOY_right_pressed();
+  const ok_pressed=ok&&!prev_ok, up_pressed=up&&!prev_up, down_pressed=down&&!prev_down,
+        left_pressed=left&&!prev_left, right_pressed=right&&!prev_right;
+  prev_ok=ok; prev_up=up; prev_down=down; prev_left=left; prev_right=right;
+  if(ok) ok_hold_time=(ok_hold_time+1)&0xFFFF; else ok_hold_time=0;
+  if(ok_hold_time>=LONG_PRESS_FRAMES&&state===STATE_PLAYING){
+    reset_game(); state=STATE_PLAYING; ok_hold_time=0; return;
+  }
+  if(state===STATE_READY||state===STATE_GAMEOVER){
+    if(left_pressed){ konami_step=(konami_step===0||konami_step===2)?konami_step+1:1; }
+    else if(right_pressed){ konami_step=(konami_step===1||konami_step===3)?konami_step+1:0; }
+    if(konami_step>=4){
+      konami_step=0; temp_brightness=brightness; temp_volume=volume; settings_sel=0;
+      state=STATE_SETTINGS; return;
+    }
+  }else{ konami_step=0; }
+  switch(state){
+    case STATE_READY:
+      if(ok_pressed||up_pressed){ reset_game(); state=STATE_PLAYING; }
+      break;
+    case STATE_PLAYING:
+      if((ok_pressed||up_pressed)&&!dino_jumping&&!dino_ducking){ dino_jumping=1; dino_jump_frame=0; SND_JUMP(); }
+      dino_ducking=down&&!dino_jumping;
+      if(dino_jumping&&down&&dino_jump_frame<JUMP_FRAMES/2){
+        dino_jump_frame=JUMP_FRAMES-dino_jump_frame-1;
+      }
+      break;
+    case STATE_GAMEOVER:
+      if(ok_pressed||up_pressed){ reset_game(); state=STATE_PLAYING; }
+      break;
+    case STATE_SETTINGS:
+      if(left_pressed){ if(settings_sel>0) settings_sel--; }
+      if(right_pressed){ if(settings_sel<2) settings_sel++; }
+      if(settings_sel===0){
+        if(up_pressed&&temp_brightness<5){ temp_brightness++; JOY_set_brightness(temp_brightness); }
+        if(down_pressed&&temp_brightness>1){ temp_brightness--; JOY_set_brightness(temp_brightness); }
+      }else if(settings_sel===1){
+        if(up_pressed&&temp_volume<5){ temp_volume++; SND_SCORE(); }
+        if(down_pressed&&temp_volume>1){ temp_volume--; SND_SCORE(); }
+      }else if(settings_sel===2){
+        if(ok_pressed){ dialog_sel=0; state=STATE_SETTINGS_DIALOG; }
+      }
+      if(ok&&ok_hold_time>=150){ restore_sel=1; state=STATE_RESTORE; ok_hold_time=0; }
+      break;
+    case STATE_SETTINGS_DIALOG:
+      if(up_pressed){ if(dialog_sel>0) dialog_sel--; }
+      if(down_pressed){ if(dialog_sel<2) dialog_sel++; }
+      if(ok_pressed){
+        if(dialog_sel===0){
+          brightness=temp_brightness; volume=temp_volume;
+          JOY_set_brightness(brightness);
+          storage_save(brightness,volume,high_score);
+          state=STATE_READY;
+        }else if(dialog_sel===1){
+          JOY_set_brightness(brightness);
+          state=STATE_READY;
+        }else{ state=STATE_SETTINGS; }
+      }
+      break;
+    case STATE_RESTORE:
+      if(left_pressed) restore_sel=0;
+      if(right_pressed) restore_sel=1;
+      if(ok_pressed){
+        if(restore_sel===0){
+          storage_save(3,3,0);
+          brightness=3; volume=3; temp_brightness=3; temp_volume=3; high_score=0;
+          JOY_set_brightness(3);
+          reset_game(); state=STATE_READY;
+        }else{ state=STATE_SETTINGS; }
+      }
+      break;
+  }
+}
+
+/* ---------- 主循环（main.c while(1) 原样：33ms 一帧） ---------- */
+function boot(){
+  const saved=storage_load();
+  brightness=saved.brightness; volume=saved.volume;
+  temp_brightness=brightness; temp_volume=volume; high_score=saved.high_score;
+  JOY_set_brightness(brightness);
+  reset_game();
+  state=STATE_READY;
+  score_tenths=0;
+}
+function loop(){
+  if(!power){ oledCtx.fillStyle='#000'; oledCtx.fillRect(0,0,SCREEN_W,SCREEN_H); return; }
+  handle_input();
+  if(state===STATE_PLAYING){
+    update_game();
+  }else if(state===STATE_READY){
+    score_tenths=(score_tenths+1)>>>0;
+    run_anim_tick=(run_anim_tick+1)&0xFF;
+    if(run_anim_tick>=6){ run_anim_tick=0; run_frame=(run_frame+1)&0xFF; }
+    for(let i=0;i<MAX_CACTI;i++){
+      if(cacti[i].active){
+        cacti[i].x-=1;
+        if(cacti[i].x<-20){
+          cacti[i].x=SCREEN_W+(JOY_random()%40);
+          cacti[i].type=CT_SINGLE;
+        }
+      }
+    }
+  }
+  oledCtx.fillStyle='#000'; oledCtx.fillRect(0,0,SCREEN_W,SCREEN_H);
+  oledCtx.fillStyle='#FFF';
+  render_frame();
+}
+
+/* ---------- 输入绑定 ---------- */
 powerEl.addEventListener('click', ()=>{
   ensureAudio();
-  power = !power;
-  consoleEl.classList.toggle('on', power);
-  powerEl.classList.toggle('on', power);
-  if(power){ startMenu(); } else { clear(); }
+  power=!power;
+  consoleEl.classList.toggle('on',power);
+  powerEl.classList.toggle('on',power);
+  if(power){ boot(); } else { oledCtx.fillStyle='#000'; oledCtx.fillRect(0,0,SCREEN_W,SCREEN_H); }
 });
-/* 键盘 */
-const keyMap = {ArrowUp:'up', KeyW:'up', ArrowDown:'down', KeyS:'down',
-                ArrowLeft:'left', ArrowRight:'right',
-                Space:'ok', Enter:'ok', KeyZ:'ok', KeyP:'power'};
-document.addEventListener('keydown', e=>{
+function setDir(k,v){
+  if(k==='up') hw.up=v; else if(k==='down') hw.down=v;
+  else if(k==='left') hw.left=v; else if(k==='right') hw.right=v;
+}
+document.querySelectorAll('.dpad button,.btn-ok').forEach(b=>{
+  const k=b.dataset.k;
+  const dn=e=>{ e.preventDefault(); b.classList.add('pressed'); ensureAudio(); if(k==='ok') hw.act=true; else setDir(k,true); };
+  const up=e=>{ b.classList.remove('pressed'); if(k==='ok') hw.act=false; else setDir(k,false); };
+  b.addEventListener('mousedown',dn); b.addEventListener('mouseup',up);
+  b.addEventListener('mouseleave',up);
+  b.addEventListener('touchstart',dn,{passive:false}); b.addEventListener('touchend',up);
+  b.addEventListener('touchcancel',up);
+});
+const keyMap={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',
+               ArrowLeft:'left',ArrowRight:'right',Space:'ok',Enter:'ok',KeyZ:'ok',KeyP:'power'};
+document.addEventListener('keydown',e=>{
   if(e.repeat) return;
-  const k = keyMap[e.code];
+  const k=keyMap[e.code];
   if(!k) return;
   e.preventDefault();
   if(k==='power'){ powerEl.click(); return; }
-  if(k==='left'||k==='right') return;
-  const b = document.querySelector(`.dpad [data-k="${k}"],.btn-ok[data-k="${k}"]`);
+  ensureAudio();
+  if(k==='ok') hw.act=true; else setDir(k,true);
+  const b=document.querySelector('.dpad [data-k="'+k+'"],.btn-ok[data-k="'+k+'"]');
   if(b) b.classList.add('pressed');
-  pressKey(k);
 });
-document.addEventListener('keyup', e=>{
-  const k = keyMap[e.code];
+document.addEventListener('keyup',e=>{
+  const k=keyMap[e.code];
   if(!k) return;
-  if(k==='left'||k==='right'||k==='power') return;
-  const b = document.querySelector(`.dpad [data-k="${k}"],.btn-ok[data-k="${k}"]`);
+  if(k==='power') return;
+  if(k==='ok') hw.act=false; else setDir(k,false);
+  const b=document.querySelector('.dpad [data-k="'+k+'"],.btn-ok[data-k="'+k+'"]');
   if(b) b.classList.remove('pressed');
-  releaseKey(k);
 });
+/* 失焦时释放所有键 */
+window.addEventListener('blur',()=>{ hw.act=false; hw.up=hw.down=hw.left=hw.right=false; });
 
-/* 启动 */
-clear();
-requestAnimationFrame(frame);
+oledCtx.fillStyle='#000'; oledCtx.fillRect(0,0,SCREEN_W,SCREEN_H);
+setInterval(loop, FRAME_MS);
+</script>
+
+<script>
+/* ============ BCDEF 页面增强：滚动高亮 / 汉堡 / 回到顶部 / 像素图解 ============ */
+(function(){
+  // 汉堡菜单
+  var burger=document.getElementById('navBurger'), links=document.getElementById('navLinks');
+  if(burger&&links){
+    burger.addEventListener('click',function(){ links.classList.toggle('open'); });
+    links.addEventListener('click',function(e){ if(e.target.tagName==='A') links.classList.remove('open'); });
+  }
+  // 回到顶部
+  var topBtn=document.getElementById('toTop');
+  if(topBtn){
+    window.addEventListener('scroll',function(){
+      topBtn.classList.toggle('show', window.scrollY>420);
+    },{passive:true});
+    topBtn.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+  // 滚动高亮（IntersectionObserver）
+  var links2=document.querySelectorAll('.nav-links a'), map={};
+  links2.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  var obs=null;
+  if('IntersectionObserver' in window){
+    obs=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links2.forEach(function(a){ a.classList.remove('active'); });
+          var a=map[en.target.id]; if(a) a.classList.add('active');
+        }
+      });
+    },{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('section[id]').forEach(function(s){ obs.observe(s); });
+  }
+  // 像素图解（24×12 网格，每格 4px）
+  function px(id, fn){
+    var c=document.getElementById(id); if(!c) return;
+    var g=c.getContext('2d'); g.clearRect(0,0,c.width,c.height); fn(g);
+  }
+  function R(g,x,y,w,h,c){ g.fillStyle=c; g.fillRect(x*4,y*4,w*4,h*4); }
+  function P(g,x,y,c){ g.fillStyle=c; g.fillRect(x*4,y*4,4,4); }
+  // 跳跃：恐龙 + 轨迹 + 仙人掌
+  px('px-jump',function(g){
+    R(g,2,7,2,3,'#222'); P(g,2,8,'#fff');                       // 恐龙 + 眼
+    P(g,8,5,'#8AA9D8'); P(g,10,4,'#8AA9D8'); P(g,12,4,'#8AA9D8'); P(g,14,5,'#8AA9D8'); // 跳弧轨迹
+    R(g,19,7,2,4,'#444'); P(g,17,8,'#444'); P(g,22,9,'#444');   // 仙人掌 + 分支
+    R(g,0,11,24,1,'#222');                                       // 地面
+  });
+  // 下蹲：蹲恐龙 + 高空飞鸟
+  px('px-duck',function(g){
+    R(g,1,9,3,2,'#222'); P(g,2,9,'#fff'); R(g,0,10,1,1,'#222');  // 蹲恐龙 + 眼 + 尾
+    R(g,18,3,2,1,'#333'); R(g,16,2,1,1,'#333'); R(g,21,2,1,1,'#333'); P(g,19,3,'#fff'); // 高鸟
+    R(g,0,11,24,1,'#222');
+  });
+  // 仙人掌：单棵 / 二连 / 三连
+  px('px-cactus',function(g){
+    function cac(x){ R(g,x,7,2,4,'#444'); P(g,x-1,8,'#444'); P(g,x+2,9,'#444'); }
+    cac(3); cac(10); cac(17);
+    R(g,0,11,24,1,'#222');
+  });
+  // 飞鸟：低鸟贴地 / 高鸟高空
+  px('px-bird',function(g){
+    R(g,4,9,2,1,'#333'); R(g,2,8,1,1,'#333'); R(g,7,8,1,1,'#333'); P(g,5,9,'#fff');  // 低鸟
+    R(g,14,3,2,1,'#333'); R(g,12,2,1,1,'#333'); R(g,17,2,1,1,'#333'); P(g,15,3,'#fff'); // 高鸟
+    R(g,0,11,24,1,'#222');
+  });
+})();
 </script>
 </body>
 </html>
