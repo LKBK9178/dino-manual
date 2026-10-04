@@ -287,6 +287,40 @@
     .chip.ver{background:#000;box-shadow:inset 0 0 0 2px #3A3A3A,0 3px 0 #000;}
   }
 
+  /* ============ 隐藏内容（PCB/原理图，口令解锁） ============ */
+  .locked-sec{display:none !important;}
+  .locked-link{display:none !important;}
+  body.unlocked .locked-sec{display:block !important;}
+  body.unlocked .locked-link{display:inline-block !important;}
+  #unlockOverlay{position:fixed;inset:0;z-index:99;background:rgba(7,30,60,.48);display:none;
+                 align-items:center;justify-content:center;padding:18px;}
+  #unlockOverlay.show{display:flex;}
+  .unlock-card{background:#fff;border-radius:18px;padding:22px 24px;max-width:320px;width:100%;
+               box-shadow:0 18px 50px rgba(0,0,0,.38);text-align:center;}
+  .unlock-card{-webkit-user-select:none;user-select:none;}
+  .unlock-card input{-webkit-user-select:text;user-select:text;}
+  .unlock-card h4{color:var(--blue-dark);font-size:16px;margin:0 0 6px;}
+  .unlock-card p{font-size:12.5px;color:var(--mute);margin:0 0 13px;}
+  .unlock-card input{width:100%;padding:13px 14px;border:2px solid var(--blue);border-radius:13px;
+                     font-size:17px;letter-spacing:4px;text-align:center;color:var(--ink);outline:none;
+                     background:#FBFDFF;box-shadow:0 0 0 3px rgba(11,87,208,.12);}
+  .unlock-lock{font-size:34px;line-height:1;margin:0 0 12px;}
+  .unlock-card input:focus{border-color:var(--blue);}
+  .unlock-btns{display:flex;gap:9px;margin-top:13px;}
+  .unlock-btns button{flex:1;padding:9px 0;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:13.5px;}
+  .u-ok{background:var(--blue);color:#fff;}
+  .u-no{background:var(--blue-soft);color:var(--blue-dark);}
+  .unlock-msg{font-size:12px;min-height:17px;margin-top:9px;color:var(--mute);}
+  .unlock-msg.err{color:#C62828;}
+  .chip.ver{transition:transform .08s;}
+  .chip.ver.hit{transform:scale(.9);}
+  @media (prefers-color-scheme:dark){
+    .unlock-card{background:#141C2E;color:var(--ink);}
+    .unlock-card input{background:#0E1524;border-color:var(--line);color:var(--ink);}
+    .u-no{background:var(--blue-soft);color:var(--blue-dark);}
+    #unlockOverlay{background:rgba(0,0,0,.55);}
+  }
+
   /* ============ PCB 图查看 ============ */
   .pcb-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:8px;}
   .pcb-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
@@ -311,7 +345,7 @@
       <a href="#play">游戏玩法</a>
       <a href="#special">特殊模式</a>
       <a href="#settings">设置界面</a>
-      <a href="#pcb">PCB 图</a><a href="#schematic">原理图</a>
+      <a href="#pcb" class="locked-link">PCB 图</a><a href="#schematic" class="locked-link">原理图</a>
       <a href="#faq">常见问题</a>
     </div>
   </div>
@@ -487,7 +521,7 @@
   </section>
 
   <!-- ============ PCB 图查看 ============ -->
-  <section id="pcb">
+  <section id="pcb" class="locked-sec">
     <h2><span class="sno">07</span><span class="ico">🧩</span>PCB 图查看</h2>
     <p>本机 PCB 的<b>顶面 / 底面</b>渲染图（25×40mm · 双面铜 · 主控 CH32V003），点击图片可查看大图。仅展示，不可下载。</p>
     <div class="pcb-wrap">
@@ -503,7 +537,7 @@
   </section>
 
   <!-- ============ 原理图 ============ -->
-  <section id="schematic">
+  <section id="schematic" class="locked-sec">
     <h2><span class="sno">08</span><span class="ico">🔌</span>硬件原理图</h2>
     <p>GameConsole v1.1 官方原理图（点击图片可查看大图，仅供查看）。</p>
     <div class="schematic">
@@ -695,40 +729,34 @@ function JOY_right_pressed(){
   return ((v>PAD_E-PAD_DEV&&v<PAD_E+PAD_DEV)||(v>PAD_NE-PAD_DEV&&v<PAD_NE+PAD_DEV)||(v>PAD_SE-PAD_DEV&&v<PAD_SE+PAD_DEV))?1:0;
 }
 
-/* ---------- 蜂鸣器模拟（driver.h JOY_sound，频率/时长/音量档位原样） ---------- */
+/* ---------- 音效（独立设计，不照搬单片机蜂鸣器参数） ----------
+   原则：短促（<=220ms）、6ms 起音、指数衰减到点即停，无拖尾、不刺耳。
+   波形：跳跃/破纪录用三角波（柔和带亮感），提示音用短方波（清脆），
+         撞击用锯齿波下滑（低沉）。音高参考经典像素游戏。 */
 let AC=null;
 function ensureAudio(){
   if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
   if(AC&&AC.state==='suspended') AC.resume();
 }
-const VOL_GAIN=[0,0,0.04,0.08,0.13,0.20];
-function JOY_sound(freq, dur){
+const VOL_GAIN=[0,0,0.10,0.16,0.22,0.30];
+function tone(f0,f1,dur,type,gain,when){
   if(volume<=1) return;
-  const halfUs=255-freq, periodUs=2*halfUs;
-  const hz=1e6/periodUs;
-  const ms=(dur*periodUs)/1000;
-  const t=AC.currentTime;
+  const t=(when||0)+AC.currentTime;
   const o=AC.createOscillator(), g=AC.createGain();
-  o.type='square'; o.frequency.value=hz;
-  /* 蜂鸣器机械滤波：低通削高频谐波 + 轻微共振，模拟真实蜂鸣片响应 */
-  const lp=AC.createBiquadFilter();
-  lp.type='lowpass'; lp.frequency.value=2800; lp.Q.value=0.9;
-  /* 柔和包络：8ms 起音、指数衰减到静音，消除咔哒/爆音 */
-  const peak=VOL_GAIN[volume>5?5:volume];
-  const durMs=Math.max(ms,0.014);
+  o.type=type||'triangle';
+  o.frequency.setValueAtTime(f0,t);
+  if(f1!==f0) o.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  const v=gain*(VOL_GAIN[volume>5?5:volume]||0.2);
   g.gain.setValueAtTime(0.0001,t);
-  g.gain.exponentialRampToValueAtTime(peak*0.85,t+0.008);
-  g.gain.exponentialRampToValueAtTime(peak,t+0.02);
-  const end=t+durMs;
-  g.gain.setValueAtTime(peak,end-0.016);
-  g.gain.exponentialRampToValueAtTime(0.0001,end);
-  o.connect(g); g.connect(lp); lp.connect(AC.destination);
-  o.start(t); o.stop(end+0.02);
+  g.gain.exponentialRampToValueAtTime(v,t+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t+dur+0.015);
 }
-function SND_JUMP(){ JOY_sound(120,50); }
-function SND_SCORE(){ JOY_sound(140,60); }
-function SND_CRASH(){ JOY_sound(60,100); setTimeout(function(){JOY_sound(40,110);},90); setTimeout(function(){JOY_sound(25,120);},180); }
-function SND_RECORD(){ [120,130,140,150].forEach(function(f,i){ setTimeout(function(){ JOY_sound(f,i===3?130:50); }, i*90); }); }
+function SND_JUMP(){ tone(620,1240,0.09,'triangle',0.9); }        /* 短促上滑"嘀" */
+function SND_SCORE(){ tone(1318,1318,0.05,'square',0.5); }       /* 清脆提示音 */
+function SND_CRASH(){ tone(400,90,0.22,'sawtooth',0.65); }       /* 低沉下滑 */
+function SND_RECORD(){ [523,659,784,1046].forEach(function(f,i){ tone(f,f,0.09,'triangle',0.8,i*0.095); }); } /* 上扬琶音 */
 
 /* ---------- 亮度（SSD1306 对比度模拟） ---------- */
 function JOY_set_brightness(level){
@@ -1332,6 +1360,61 @@ setInterval(loop, FRAME_MS);
     R(g,14,3,2,1,'#333'); R(g,12,2,1,1,'#333'); R(g,17,2,1,1,'#333'); P(g,15,3,'#fff'); // 高鸟
     R(g,0,11,24,1,'#222');
   });
+})();
+</script>
+
+<!-- ============ 隐藏内容解锁弹窗 ============ -->
+<div id="unlockOverlay"><div class="unlock-card">
+  <div class="unlock-lock">🔒</div>
+  <input id="unlockInput" type="password" placeholder="口令" autocomplete="off" spellcheck="false">
+  <div class="unlock-btns"><button class="u-ok" id="unlockOk">解锁</button><button class="u-no" id="unlockCancel">取消</button></div>
+  <div class="unlock-msg" id="unlockMsg"></div>
+</div></div>
+<script>
+/* ---------- 解锁逻辑：版本号连点 5 次 → 口令框 ---------- */
+(function(){
+  var PWD='TINYQ3';
+  var ver=document.querySelector('.chip.ver'),
+      overlay=document.getElementById('unlockOverlay'),
+      input=document.getElementById('unlockInput'),
+      msg=document.getElementById('unlockMsg');
+  var hits=0, last=0;
+  function unlock(){
+    document.body.classList.add('unlocked');
+    try{ localStorage.setItem('dino_unlock','1'); }catch(e){}
+    if(overlay) overlay.classList.remove('show');
+    if(msg){ msg.textContent=''; msg.className='unlock-msg'; }
+    if(input) input.value='';
+  }
+  if(localStorage.getItem('dino_unlock')==='1') document.body.classList.add('unlocked');
+  if(ver){
+    ver.addEventListener('click',function(){
+      var now=Date.now();
+      if(now-last>900) hits=0;
+      last=now; hits++;
+      ver.classList.add('hit'); setTimeout(function(){ ver.classList.remove('hit'); },90);
+      if(hits>=5){
+        hits=0;
+        if(document.body.classList.contains('unlocked')) return;
+        if(overlay){ overlay.classList.add('show'); if(input) input.focus(); }
+        if(msg){ msg.textContent=''; msg.className='unlock-msg'; }
+      }
+    });
+  }
+  function tryUnlock(){
+    var v=(input?input.value.trim().toUpperCase():'');
+    if(v===PWD){ unlock(); }
+    else if(msg){ msg.textContent='口令错误，再试试'; msg.className='unlock-msg err'; if(input) input.select(); }
+  }
+  var ok=document.getElementById('unlockOk');
+  if(ok) ok.addEventListener('click',tryUnlock);
+  var no=document.getElementById('unlockCancel');
+  if(no) no.addEventListener('click',function(){
+    overlay.classList.remove('show'); if(input){ input.value=''; }
+    if(msg){ msg.textContent=''; msg.className='unlock-msg'; }
+  });
+  if(input) input.addEventListener('keydown',function(e){ if(e.key==='Enter') tryUnlock(); });
+  if(overlay) overlay.addEventListener('click',function(e){ if(e.target===overlay) overlay.classList.remove('show'); });
 })();
 </script>
 </body>
