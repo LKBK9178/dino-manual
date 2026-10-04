@@ -233,6 +233,9 @@
        linear-gradient(rgba(11,87,208,.028) 1px,transparent 1px),
        linear-gradient(90deg,rgba(11,87,208,.028) 1px,transparent 1px);
        background-size:22px 22px;}
+  /* 下载备用镜像提示 */
+  .dl-alt{margin-top:13px;font-size:12.5px;color:#C6DBFF;}
+  .dl-alt a{color:#fff;font-weight:700;}
   .btn:active,.zoom:active{transform:translateY(2px);box-shadow:none;}
   .card{transition:box-shadow .18s;}
   .card:hover{transform:none;box-shadow:var(--shadow-md);}
@@ -330,8 +333,9 @@
     </div>
     <div class="hero-btns">
       <a class="btn btn-play" href="#sim">▶ 在线试玩模拟器</a>
-      <a class="btn btn-dl" href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@f5d2eecdb301cf6750b46b6cd4f1d20cb8dd3ff0/dino-manual.pdf">⬇ 下载说明书 PDF</a>
+      <a class="btn btn-dl" href="https://github.com/LKBK9178/dino-manual/raw/main/dino-manual.pdf">⬇ 下载说明书 PDF</a>
     </div>
+    <div class="dl-alt">主链接打不开？试试 <a href="https://cdn.jsdelivr.net/gh/LKBK9178/dino-manual@main/dino-manual.pdf">备用镜像</a></div>
   </div>
 
   <!-- ============ 真机模拟环境 ============ -->
@@ -521,7 +525,7 @@
     <details><summary>最高分会丢吗？</summary><p>不会，写入 Flash，断电后依然保留。</p></details>
     <details><summary>三连仙人掌太难？</summary><p>特殊模式下三连概率降低、间距拉大，稳住节奏提前起跳。</p></details>
     <details><summary>想恢复出厂？</summary><p>设置界面长按 OK 5 秒 → 还原系统 → 确认，即可清除记录并重启。</p></details>
-    <details><summary>在哪里下载说明书？</summary><p>仅本页顶部的“下载说明书 PDF”按钮提供下载；源码、编译文件、Gerber、原理图均仅作展示，不在线提供下载。</p></details>
+    <details><summary>在哪里下载说明书？</summary><p>仅本页顶部的“下载说明书 PDF”按钮提供下载（另有备用镜像链接）；源码、编译文件、Gerber、原理图均仅作展示，不在线提供下载。</p></details>
   </section>
 
   <footer>
@@ -697,7 +701,7 @@ function ensureAudio(){
   if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
   if(AC&&AC.state==='suspended') AC.resume();
 }
-const VOL_GAIN=[0,0,0.05,0.10,0.18,0.28];
+const VOL_GAIN=[0,0,0.04,0.08,0.13,0.20];
 function JOY_sound(freq, dur){
   if(volume<=1) return;
   const halfUs=255-freq, periodUs=2*halfUs;
@@ -706,16 +710,25 @@ function JOY_sound(freq, dur){
   const t=AC.currentTime;
   const o=AC.createOscillator(), g=AC.createGain();
   o.type='square'; o.frequency.value=hz;
+  /* 蜂鸣器机械滤波：低通削高频谐波 + 轻微共振，模拟真实蜂鸣片响应 */
+  const lp=AC.createBiquadFilter();
+  lp.type='lowpass'; lp.frequency.value=2800; lp.Q.value=0.9;
+  /* 柔和包络：8ms 起音、指数衰减到静音，消除咔哒/爆音 */
+  const peak=VOL_GAIN[volume>5?5:volume];
+  const durMs=Math.max(ms,0.014);
   g.gain.setValueAtTime(0.0001,t);
-  g.gain.exponentialRampToValueAtTime(VOL_GAIN[volume>5?5:volume],t+0.004);
-  g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(ms,0.01));
-  o.connect(g); g.connect(AC.destination);
-  o.start(t); o.stop(t+ms+0.03);
+  g.gain.exponentialRampToValueAtTime(peak*0.85,t+0.008);
+  g.gain.exponentialRampToValueAtTime(peak,t+0.02);
+  const end=t+durMs;
+  g.gain.setValueAtTime(peak,end-0.016);
+  g.gain.exponentialRampToValueAtTime(0.0001,end);
+  o.connect(g); g.connect(lp); lp.connect(AC.destination);
+  o.start(t); o.stop(end+0.02);
 }
 function SND_JUMP(){ JOY_sound(120,50); }
-function SND_SCORE(){ JOY_sound(180,60); }
-function SND_CRASH(){ JOY_sound(80,80); JOY_sound(40,100); JOY_sound(20,120); }
-function SND_RECORD(){ JOY_sound(150,50); JOY_sound(160,50); JOY_sound(170,50); JOY_sound(180,130); }
+function SND_SCORE(){ JOY_sound(140,60); }
+function SND_CRASH(){ JOY_sound(60,100); setTimeout(function(){JOY_sound(40,110);},90); setTimeout(function(){JOY_sound(25,120);},180); }
+function SND_RECORD(){ [120,130,140,150].forEach(function(f,i){ setTimeout(function(){ JOY_sound(f,i===3?130:50); }, i*90); }); }
 
 /* ---------- 亮度（SSD1306 对比度模拟） ---------- */
 function JOY_set_brightness(level){
