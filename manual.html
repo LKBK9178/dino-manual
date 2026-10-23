@@ -605,7 +605,7 @@ const CACTUS_W=[6,13,20,10,10];
 const CACTUS_H=[12,12,12,12,8];
 const CACTUS_SPRITE_H=[16,16,16,8,8];
 const STATE_READY=0, STATE_PLAYING=1, STATE_GAMEOVER=2,
-      STATE_SETTINGS=3, STATE_SETTINGS_DIALOG=4, STATE_RESTORE=5;
+      STATE_SETTINGS=3, STATE_SETTINGS_DIALOG=4, STATE_RESTORE=5, STATE_BOOT=6;
 const POW10=[1,10,100,1000,10000];
 
 /* ---------- 精灵数据（spritebank.h Q-3，原样字节） ---------- */
@@ -692,7 +692,7 @@ const ZH_SMALL=[
 ];
 
 /* ---------- 全局变量（main.c 原样） ---------- */
-let state = STATE_READY;
+let state = STATE_BOOT;
 let page_buf = new Array(128).fill(0);
 let cacti = [];
 for(let i=0;i<MAX_CACTI;i++) cacti.push({type:0,x:0,active:0});
@@ -702,6 +702,7 @@ let dino_jumping=0, dino_jump_frame=0, dino_ducking=0, run_frame=0, run_anim_tic
 let ok_hold_time=0;
 let prev_ok=0, prev_up=0, prev_down=0, prev_left=0, prev_right=0;
 let game_over_flash=0;
+let boot_flash=0;
 let special_state=0, special_rem=0, cycle_tenths=0, cycle_target=1800;
 let go_snapshot=[]; for(let i=0;i<MAX_CACTI;i++) go_snapshot.push({type:0,x:0,active:0});
 let go_dino_pose=0, go_run_frame=0, go_jump_frame=0, record_played=0;
@@ -843,6 +844,30 @@ function draw_text_paged(x, s, page, y_shift){
 }
 function draw_text(x, s){
   for(const ch of s){ blit_char(x, char_to_font(ch)); x+=6; }
+}
+/* 4x6迷你文字（PRESS OK 专用）：字宽4px+1px间距=5px/字符，高6行 y55-60
+   行0 → 页6 bit7(y55)；行1-5 → 页7 bits0-4(y56-60)。横向像素逐列展开。 */
+function draw_text_4x6(x, s, page){
+  const G_P=[0x0F,0x09,0x0E,0x09,0x09,0x09];
+  const G_R=[0x0F,0x09,0x0E,0x0A,0x09,0x09];
+  const G_E=[0x0F,0x08,0x0E,0x08,0x08,0x0F];
+  const G_S=[0x07,0x08,0x0E,0x01,0x09,0x06];
+  const G_O=[0x06,0x09,0x09,0x09,0x09,0x06];
+  const G_K=[0x09,0x09,0x0E,0x0C,0x0A,0x09];
+  for(const ch of s){
+    let g=[0,0,0,0,0,0];
+    if(ch==='P') g=G_P; else if(ch==='R') g=G_R; else if(ch==='E') g=G_E;
+    else if(ch==='S') g=G_S; else if(ch==='O') g=G_O; else if(ch==='K') g=G_K;
+    for(let i=0;i<6;i++){
+      const row=g[i];
+      for(let j=0;j<4&&x+j<SCREEN_W;j++){
+        if(!(row&(0x08>>j))) continue;
+        if(i===0){ if(page===6) page_buf[x+j]|=0x80; }
+        else { if(page===7) page_buf[x+j]|=(1<<(i-1)); }
+      }
+    }
+    x+=5;
+  }
 }
 function draw_score(score){
   let x=SCREEN_W-5*6, started=0;
@@ -1011,8 +1036,51 @@ function update_game(){
 
 /* ---------- 渲染一帧（main.c render_frame 原样，页缓冲→canvas） ---------- */
 function render_frame(){
-  for(let page=0;page<7;page++){
+  for(let page=0;page<8;page++){
     for(let i=0;i<SCREEN_W;i++) page_buf[i]=0;
+    /* ===== 开机画面（main.c boot_screen 原样）：全屏LOGO+边框+PRESS OK ===== */
+    if(state===STATE_BOOT){
+      page_buf[0]=0xFF; page_buf[1]=0xFF; page_buf[126]=0xFF; page_buf[127]=0xFF;
+      if(page===0){
+        page_buf[0]&=~0x07; page_buf[1]&=~0x03; page_buf[2]&=~0x01;
+        page_buf[125]&=~0x01; page_buf[126]&=~0x03; page_buf[127]&=~0x07;
+        page_buf[2]|=0x06; page_buf[125]|=0x06;
+        for(let i=3;i<125;i++) page_buf[i]|=0x03;
+      }
+      if(page===7){
+        page_buf[0]&=~0xF0; page_buf[1]&=~0xC0; page_buf[2]&=~0x80;
+        page_buf[125]&=~0x80; page_buf[126]&=~0xC0; page_buf[127]&=~0xF0;
+        page_buf[2]|=0x30; page_buf[125]|=0x30;
+        for(let i=3;i<125;i++) page_buf[i]|=0xC0;
+      }
+      if(page===0||page===1){
+        blit_sprite(page,12,2,CLOUD_2);
+        blit_sprite(page,92,4,CLOUD_3);
+      }
+      if(page===2) draw_text(40,"DINO RUN");
+      if(page===4||page===5){
+        blit_sprite(page,28,GROUND_Y-16,(boot_flash&1)?DINO_RUN2:DINO_RUN1);
+      }
+      if(page===6){
+        for(let i=0;i<SCREEN_W;i++) page_buf[i]=0x01;
+      }
+      if(page===6||page===7){
+        if(boot_flash&8){
+          if(page===6){
+            page_buf[43]|=0x80;
+            for(let i=44;i<=83;i++) page_buf[i]|=0x40;
+            page_buf[84]|=0x80;
+          }else{
+            page_buf[43]|=0x1F;
+            for(let i=44;i<=83;i++) page_buf[i]|=0x20;
+            page_buf[84]|=0x1F;
+          }
+          draw_text_4x6(44,"PRESS OK",page);
+        }
+      }
+      paintPage(page);
+      continue;
+    }
     if(page===6&&state!==STATE_SETTINGS&&state!==STATE_SETTINGS_DIALOG&&state!==STATE_RESTORE){
       for(let i=0;i<SCREEN_W;i++) page_buf[i]=0x01;
       const p1=(score_tenths>>2)%128;
@@ -1138,10 +1206,11 @@ function render_frame(){
     }
     if(state===STATE_GAMEOVER){
       if(page===1||page===2) draw_text_paged(37,"GAME OVER",page,2);
-      if(page===3||page===4) blit_sprite(page,55,24,REFRESH_ICON);
+      if((page===3||page===4)&&(game_over_flash&0x10)) blit_sprite(page,55,24,REFRESH_ICON);
     }
     paintPage(page);
   }
+  if(state===STATE_BOOT) boot_flash=(boot_flash+1)&0xFF;
   if(state===STATE_GAMEOVER) game_over_flash=(game_over_flash+1)&0xFF;
 }
 function paintPage(page){
@@ -1176,6 +1245,9 @@ function handle_input(){
     }
   }else{ konami_step=0; }
   switch(state){
+    case STATE_BOOT:
+      if(ok_pressed){ boot_flash=0; state=STATE_READY; }
+      break;
     case STATE_READY:
       if(ok_pressed||up_pressed){ reset_game(); state=STATE_PLAYING; }
       break;
@@ -1240,7 +1312,8 @@ function boot(){
   temp_brightness=brightness; temp_volume=volume; high_score=saved.high_score;
   JOY_set_brightness(brightness);
   reset_game();
-  state=STATE_READY;
+  state=STATE_BOOT;
+  boot_flash=0;
   score_tenths=0;
 }
 function loop(){
